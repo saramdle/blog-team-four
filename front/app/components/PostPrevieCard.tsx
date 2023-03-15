@@ -5,9 +5,9 @@ import Link from "next/link";
 export default function PostPreviewCard({
   author,
   createdAt,
-  image,
+  imgUrl,
   id,
-  postTitle,
+  title,
 }: Post) {
   return (
     <Link
@@ -16,7 +16,7 @@ export default function PostPreviewCard({
     >
       <div className='flex h-[150px] overflow-hidden rounded-3xl bg-white shadow-lg sm:h-[200px]'>
         <div className='relative flex-[1]'>
-          <Image alt={postTitle} src={image} fill className='object-cover' />
+          <Image alt={title} src={imgUrl} fill className='object-cover' />
         </div>
         <div className='flex flex-[1] flex-col items-center justify-center'>
           <div className='flex items-center gap-2 text-sm text-gray-400'>
@@ -28,7 +28,7 @@ export default function PostPreviewCard({
               <div>{moment(createdAt).format("YYYY MM DD")}</div>
             </div>
           </div>
-          <h2 className='font-bold text-neutral sm:text-xl'>{postTitle}</h2>
+          <h2 className='font-bold text-neutral sm:text-xl'>{title}</h2>
         </div>
       </div>
     </Link>

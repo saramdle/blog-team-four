@@ -21,14 +21,14 @@ export default async function Page({
   const post = posts?.find((post) => post.id === postId);
   return (
     <Container>
-      <h1>{post?.postTitle}</h1>
+      <h1>{post?.title}</h1>
       <Image
-        alt={post?.postTitle || "food image"}
-        src={post?.image || ""}
+        alt={post?.title || "food image"}
+        src={post?.imgUrl || ""}
         width={300}
         height={300}
       />
-      <p>{post?.content}</p>
+      <p>{post?.contents}</p>
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
     </Container>

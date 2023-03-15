@@ -1,9 +1,9 @@
 type Post = {
   id: string;
-  image: string;
+  imgUrl: string;
   author: string;
-  content: string;
-  postTitle: string;
+  contents: string;
+  title: string;
   createdAt: string;
   updatedAt: string;
 };

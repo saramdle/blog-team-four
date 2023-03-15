@@ -21,9 +21,9 @@ export default async function PostPreview() {
           author={post.author}
           id={post.id}
           key={post.id}
-          image={post.image}
-          postTitle={post.postTitle}
-          content={post.content}
+          imgUrl={post.imgUrl}
+          title={post.title}
+          contents={post.contents}
         />
       ))}
     </div>
