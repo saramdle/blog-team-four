@@ -1,7 +1,7 @@
 import PostPreviewCard from "./PostPrevieCard";
 
 async function getPosts() {
-  const res = await fetch("http://localhost:8000/posts", {
+  const res = await fetch("http://localhost:4000/posts", {
     next: { revalidate: 60 * 60 },
   });
   if (!res.ok) {

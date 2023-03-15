@@ -2,7 +2,7 @@ import Container from "@/app/components/Container";
 import Image from "next/image";
 
 async function getPosts() {
-  const res = await fetch("http://localhost:8000/posts");
+  const res = await fetch("http://localhost:4000/posts");
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -18,7 +18,7 @@ export default async function Page({
 }) {
   const postId = params.postId;
   const posts: Post[] = await getPosts();
-  const post = posts?.find((post) => post.id === postId);
+  const post = posts.find((post) => post.id == parseInt(postId));
   return (
     <Container>
       <h1>{post?.title}</h1>
