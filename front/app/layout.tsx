@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
-  title: "4조",
+  title: "졸린우정",
   description: "4조 블로그 프로젝트",
   category: "blog",
 };

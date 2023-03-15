@@ -1,16 +1,14 @@
-import { PostType } from "@/constants/dummy";
 import Image from "next/image";
 import moment from "moment";
 import Link from "next/link";
+
 export default function PostPreviewCard({
-  image,
-  address,
   author,
-  contents,
   createdAt,
+  image,
   id,
-  title,
-}: PostType) {
+  postTitle,
+}: Post) {
   return (
     <Link
       href={`/posts/${id}`}
@@ -18,7 +16,7 @@ export default function PostPreviewCard({
     >
       <div className='flex h-[150px] overflow-hidden rounded-3xl bg-white shadow-lg sm:h-[200px]'>
         <div className='relative flex-[1]'>
-          <Image alt={title} src={image} fill className='object-cover' />
+          <Image alt={postTitle} src={image} fill className='object-cover' />
         </div>
         <div className='flex flex-[1] flex-col items-center justify-center'>
           <div className='flex items-center gap-2 text-sm text-gray-400'>
@@ -26,11 +24,11 @@ export default function PostPreviewCard({
               <Image alt='' src='/dummy_profile.avif' width={40} height={40} />
             </div>
             <div className='flex flex-col'>
-              <div>Jane Doh</div>
+              <div>{author}</div>
               <div>{moment(createdAt).format("YYYY MM DD")}</div>
             </div>
           </div>
-          <h2 className='font-bold text-neutral sm:text-xl'>{title}</h2>
+          <h2 className='font-bold text-neutral sm:text-xl'>{postTitle}</h2>
         </div>
       </div>
     </Link>

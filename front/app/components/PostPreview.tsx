@@ -1,22 +1,29 @@
-import { DUMMY_POSTS, PostType } from "@/constants/dummy";
-import Image from "next/image";
 import PostPreviewCard from "./PostPrevieCard";
 
-export default function PostPreview() {
+async function getPosts() {
+  const res = await fetch("http://localhost:8000/posts", {
+    next: { revalidate: 60 * 60 },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+export default async function PostPreview() {
+  const posts: Post[] = await getPosts();
   return (
     <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
-      {DUMMY_POSTS.map((post) => (
+      {posts.map((post: Post) => (
         <PostPreviewCard
-          comments={post.comments}
           createdAt={post.createdAt}
           updatedAt={post.updatedAt}
-          address={post.address}
-          author={post.address}
+          author={post.author}
           id={post.id}
           key={post.id}
           image={post.image}
-          title={post.title}
-          contents={post.contents}
+          postTitle={post.postTitle}
+          content={post.content}
         />
       ))}
     </div>

@@ -22,6 +22,7 @@ export default function Home() {
         인기 글
       </h3>
       <Container>
+        {/* @ts-expect-error Server Component */}
         <PostPreview />
       </Container>
     </main>
