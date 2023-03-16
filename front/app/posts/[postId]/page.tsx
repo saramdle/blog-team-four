@@ -1,24 +1,37 @@
 import Container from "@/app/components/Container";
+import { Metadata } from "next";
 import Image from "next/image";
 
-async function getPosts() {
-  const res = await fetch("http://localhost:4000/posts");
+async function getPost(id: number) {
+  const res = await fetch(`http://localhost:4000/posts/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
   return res.json();
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    postId: number;
+  };
+}): Promise<Metadata> {
+  const post = await getPost(params.postId);
+  console.log(post);
+  console.log(post.title);
+  return { title: post.title };
+}
+
 export default async function Page({
   params,
 }: {
   params: {
-    postId: string;
+    postId: number;
   };
 }) {
   const postId = params.postId;
-  const posts: Post[] = await getPosts();
-  const post = posts.find((post) => post.id == parseInt(postId));
+  const post: Post = await getPost(postId);
   return (
     <Container>
       <h1>{post?.title}</h1>
