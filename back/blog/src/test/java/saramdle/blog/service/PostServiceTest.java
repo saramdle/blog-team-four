@@ -2,6 +2,7 @@ package saramdle.blog.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,18 @@ class PostServiceTest {
         Post findPost = postService.findPost(post.getId());
 
         assertThat(findPost).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("모든 게시물을 조회합니다.")
+    void findPosts() {
+        Post post1 = Post.builder().build();
+        Post post2 = Post.builder().build();
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        List<Post> posts = postService.findPosts();
+
+        assertThat(posts).hasSize(2);
     }
 }
