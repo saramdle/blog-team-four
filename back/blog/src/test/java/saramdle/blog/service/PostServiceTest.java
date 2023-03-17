@@ -1,6 +1,7 @@
 package saramdle.blog.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,13 @@ class PostServiceTest {
         Post findPost = postService.findPost(post.getId());
 
         assertThat(findPost).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("존재하지 않은 게시물을 조회할 경우 예외가 발생합니다.")
+    void findPostFail() {
+        assertThatThrownBy(() -> postService.findPost(100L))
+                .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
