@@ -1,5 +1,6 @@
 package saramdle.blog.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,5 +24,10 @@ public class PostService {
     public Post findPost(Long postId) {
         return repository.findById(postId)
                 .orElseThrow(() -> new IllegalStateException(NOT_FOUND_POST));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findPosts() {
+        return repository.findAll();
     }
 }
