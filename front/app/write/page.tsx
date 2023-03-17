@@ -1,27 +1,87 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Container from "../components/Container";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 export default function Write() {
+  const router = useRouter();
+
+  //hydration error
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  //react quill
   const ReactQuill =
-    typeof window === "object" ? require("react-quill") : () => false;
+    typeof window === "object"
+      ? require("react-quill")
+      : () => <p>Loading ...</p>;
+
   const [contentsInput, setContentsInput] = useState("");
-  console.log(contentsInput);
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const postingData = {
+      title: titleRef.current?.value,
+      // 로그인된 user로 대체될 예정
+      author: "홍길동",
+      contents: contentsInput,
+      // 업로드된 사진 url로 대체될 예정
+      imgUrl:
+        "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      // db자동생성될 예정
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const response = await fetch("http://localhost:4000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postingData),
+    });
+    return response.json();
+  };
+
   return (
     <Container>
-      <div className='flex h-[500px] gap-5'>
-        <div className='flex-[5]'>
+      <form
+        method='POST'
+        className='flex flex-col gap-5'
+        onSubmit={handleSubmit}
+      >
+        <div className='flex items-center'>
+          <input
+            type='text'
+            placeholder='제목을 입력하세요'
+            className='text-bold w-full bg-transparent text-4xl focus:outline-none'
+            ref={titleRef}
+          />
+        </div>
+        <label
+          htmlFor='image'
+          className='w-max cursor-pointer text-gray-400 hover:text-primary'
+        >
+          이미지 업로드
+        </label>
+        <input type='file' name='image' id='image' className='hidden' />
+        {mounted && (
           <ReactQuill
             theme='snow'
             value={contentsInput}
             onChange={setContentsInput}
-            className='text-editor-height'
+            className='h-[500px]'
           />
+        )}
+        <div className='flex justify-between'>
+          <button className='btn-outline btn mt-10 w-max'>나가기</button>
+          <button className='btn-primary btn mt-10 w-max'>발행</button>
         </div>
-        <div className='flex-[2] bg-slate-200'>전송, 이미지업로드</div>
-      </div>
+      </form>
     </Container>
   );
 }
