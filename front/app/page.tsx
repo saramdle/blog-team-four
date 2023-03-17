@@ -19,7 +19,7 @@ export default function Home() {
         <div className='absolute inset-0 bg-black/40' />
       </div>
       <h3 className='py-7 text-center text-3xl font-bold underline underline-offset-8'>
-        인기 글
+        최신 글
       </h3>
       <Container>
         {/* @ts-expect-error Server Component */}

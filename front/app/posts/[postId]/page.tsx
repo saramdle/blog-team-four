@@ -3,7 +3,9 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 async function getPost(id: number) {
-  const res = await fetch(`http://localhost:4000/posts/${id}`);
+  const res = await fetch(`http://localhost:4000/posts/${id}`, {
+    next: { revalidate: 60 * 60 },
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
