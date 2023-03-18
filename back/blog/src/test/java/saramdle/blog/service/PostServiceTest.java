@@ -76,4 +76,17 @@ class PostServiceTest {
         assertThat(findPost.getAuthor()).isEqualTo(updateParam.getAuthor());
         assertThat(findPost.getContent()).isEqualTo(updateParam.getContent());
     }
+
+    @Test
+    @DisplayName("게시물을 삭제합니다.")
+    void delete() {
+        Post post = Post.builder().build();
+        Post savedPost = postRepository.save(post);
+        Long postId = savedPost.getId();
+
+        postService.delete(postId);
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts).isEmpty();
+    }
 }
