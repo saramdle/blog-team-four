@@ -37,4 +37,9 @@ public class PostService {
         post.update(updateParam.getTitle(), updateParam.getAuthor(), updateParam.getContent());
         return postId;
     }
+
+    @Transactional
+    public void delete(Long postId) {
+        repository.deleteById(postId);
+    }
 }
