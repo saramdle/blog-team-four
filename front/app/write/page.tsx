@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Container from "../components/Container";
 import { useEffect, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
@@ -20,13 +19,13 @@ export default function Write() {
       ? require("react-quill")
       : () => <p>Loading ...</p>;
 
-  const [contentsInput, setContentsInput] = useState("");
-  const titleRef = useRef<HTMLInputElement>(null);
+  const [contentsInput, setContentsInput] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const postingData = {
-      title: titleRef.current?.value,
+      title,
       // 로그인된 user로 대체될 예정
       author: "홍길동",
       contents: contentsInput,
@@ -49,22 +48,21 @@ export default function Write() {
 
   const modules = {
     toolbar: [
-      ["bold", "italic", "underline", "strike", "image"], // toggled buttons
-      ["blockquote", "code-block"],
-
-      [{ header: 1 }, { header: 2 }], // custom button values
+      ["bold", "italic", "underline", "strike", "image"],
+      ["blockquote"],
+      [{ header: 1 }, { header: 2 }],
       [{ list: "ordered" }, { list: "bullet" }],
-      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ color: [] }, { background: [] }],
       [{ align: [] }],
-      ["clean"], // remove formatting button
+      ["clean"],
     ],
   };
   return (
-    <Container>
+    <div className='flex'>
       <form
         method='POST'
-        className='flex flex-col gap-5'
+        className='flex flex-1 flex-col gap-5 p-4'
         onSubmit={handleSubmit}
       >
         <div className='flex items-center'>
@@ -72,7 +70,8 @@ export default function Write() {
             type='text'
             placeholder='제목을 입력하세요'
             className='text-bold w-full bg-transparent text-4xl focus:outline-none'
-            ref={titleRef}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <label
@@ -94,10 +93,22 @@ export default function Write() {
           )}
         </div>
         <div className='flex justify-between'>
-          <button className='btn-outline btn mt-10 w-max'>나가기</button>
+          <div
+            className='btn-outline btn mt-10 w-max'
+            onClick={() => router.back()}
+          >
+            나가기
+          </div>
           <button className='btn-primary btn mt-10 w-max'>발행</button>
         </div>
       </form>
-    </Container>
+      <div className='flex-1 border-l-2 p-3'>
+        <h1 className='text-4xl'>{title}</h1>
+        <p
+          dangerouslySetInnerHTML={{ __html: contentsInput }}
+          className='prose mt-4 max-w-none prose-p:m-0'
+        />
+      </div>
+    </div>
   );
 }
