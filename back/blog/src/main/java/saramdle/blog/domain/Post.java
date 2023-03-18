@@ -43,4 +43,10 @@ public class Post {
         this.createAt = createAt;
         this.updateAt = updateAt;
     }
+
+    public void update(String title, String author, String content) {
+        this.title = title;
+        this.author = author;
+        this.content = content;
+    }
 }
