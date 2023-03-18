@@ -41,7 +41,10 @@ export default async function Page({
         width={300}
         height={300}
       />
-      <p>{post?.contents}</p>
+      <p
+        dangerouslySetInnerHTML={{ __html: post?.contents }}
+        className='prose'
+      />
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
     </Container>
