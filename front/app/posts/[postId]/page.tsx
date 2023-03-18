@@ -43,7 +43,7 @@ export default async function Page({
       />
       <p
         dangerouslySetInnerHTML={{ __html: post?.contents }}
-        className='prose'
+        className='prose max-w-none'
       />
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
