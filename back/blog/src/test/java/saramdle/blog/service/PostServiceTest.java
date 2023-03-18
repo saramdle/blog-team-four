@@ -60,4 +60,20 @@ class PostServiceTest {
 
         assertThat(posts).hasSize(2);
     }
+
+    @Test
+    @DisplayName("게시물을 수정합니다.")
+    void update() {
+        Post post = Post.builder().title("제목1").author("작성자1").content("본문1").build();
+        Post savedPost = postRepository.save(post);
+        Long postId = savedPost.getId();
+
+        Post updateParam = Post.builder().title("제목2").author("작성자2").content("본문2").build();
+        postService.update(postId, updateParam);
+
+        Post findPost = postRepository.findById(postId).orElseThrow();
+        assertThat(findPost.getTitle()).isEqualTo(updateParam.getTitle());
+        assertThat(findPost.getAuthor()).isEqualTo(updateParam.getAuthor());
+        assertThat(findPost.getContent()).isEqualTo(updateParam.getContent());
+    }
 }
