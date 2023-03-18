@@ -50,3 +50,14 @@ export default async function Page({
     </Container>
   );
 }
+
+export async function generateStaticParams() {
+  const res = await fetch("http://localhost:4000/posts");
+  if (!res.ok) {
+    throw new Error("Failed to fetch all the posts");
+  }
+  const posts: Post[] = await res.json();
+  return posts.map((post) => ({
+    postId: post.id.toString(),
+  }));
+}
