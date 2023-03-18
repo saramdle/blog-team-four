@@ -47,6 +47,19 @@ export default function Write() {
     return response.json();
   };
 
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike", "image"], // toggled buttons
+      ["blockquote", "code-block"],
+
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ align: [] }],
+      ["clean"], // remove formatting button
+    ],
+  };
   return (
     <Container>
       <form
@@ -69,14 +82,17 @@ export default function Write() {
           이미지 업로드
         </label>
         <input type='file' name='image' id='image' className='hidden' />
-        {mounted && (
-          <ReactQuill
-            theme='snow'
-            value={contentsInput}
-            onChange={setContentsInput}
-            className='h-[500px]'
-          />
-        )}
+        <div>
+          {mounted && (
+            <ReactQuill
+              theme='snow'
+              value={contentsInput}
+              onChange={setContentsInput}
+              className='h-[500px]'
+              modules={modules}
+            />
+          )}
+        </div>
         <div className='flex justify-between'>
           <button className='btn-outline btn mt-10 w-max'>나가기</button>
           <button className='btn-primary btn mt-10 w-max'>발행</button>
