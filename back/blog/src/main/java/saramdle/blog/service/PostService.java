@@ -40,6 +40,7 @@ public class PostService {
 
     @Transactional
     public void delete(Long postId) {
-        repository.deleteById(postId);
+        Post post = findPost(postId);
+        repository.delete(post);
     }
 }
