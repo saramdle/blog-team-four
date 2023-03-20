@@ -18,17 +18,17 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String content;
+    private String contents;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String commentWriter;
+    private String author;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateAt;
 
     @Builder
     private Comment(Long id, String content, Post post, String commentWriter,
