@@ -16,7 +16,14 @@ export default function PostPreviewCard({
     >
       <div className='flex h-[150px] overflow-hidden rounded-3xl bg-white shadow-lg sm:h-[200px]'>
         <div className='relative flex-[1]'>
-          <Image alt={title} src={imgUrl} fill className='object-cover' />
+          <Image
+            alt={title}
+            src={imgUrl}
+            fill
+            className='object-cover'
+            sizes='(max-width: 768px) 50vw, 20vw'
+            priority
+          />
         </div>
         <div className='flex flex-[1] flex-col items-center justify-center'>
           <div className='flex items-center gap-2 text-sm text-gray-400'>
