@@ -12,9 +12,10 @@ async function getPosts() {
 
 export default async function PostPreview() {
   const posts: Post[] = await getPosts();
+  const latestSortedPosts = posts.sort((a, b) => b.id - a.id);
   return (
     <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
-      {posts.map((post: Post) => (
+      {latestSortedPosts.map((post: Post) => (
         <PostPreviewCard
           createdAt={post.createdAt}
           updatedAt={post.updatedAt}
