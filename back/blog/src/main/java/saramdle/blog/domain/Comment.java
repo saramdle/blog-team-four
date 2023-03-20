@@ -30,20 +30,20 @@ public class Comment {
 
     private String imgUrl;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     @Builder
     private Comment(Long id, String title, String contents, Post post, String author, String imgUrl,
-                    LocalDateTime createAt, LocalDateTime updateAt) {
+                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.post = post;
         this.author = author;
         this.imgUrl = imgUrl;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
