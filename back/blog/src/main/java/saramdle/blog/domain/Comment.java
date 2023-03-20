@@ -22,6 +22,10 @@ public class Comment {
 
     private String contents;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
     private String author;
 
     private String imgUrl;
@@ -31,11 +35,12 @@ public class Comment {
     private LocalDateTime updateAt;
 
     @Builder
-    private Comment(Long id, String title, String contents, String author, String imgUrl,
+    private Comment(Long id, String title, String contents, Post post, String author, String imgUrl,
                     LocalDateTime createAt, LocalDateTime updateAt) {
         this.id = id;
         this.title = title;
         this.contents = contents;
+        this.post = post;
         this.author = author;
         this.imgUrl = imgUrl;
         this.createAt = createAt;
