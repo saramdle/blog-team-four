@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.Post;
-
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,9 +22,8 @@ class CommentServiceTest {
     @Autowired
     PostService postService;
 
-
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         Post post1 = Post.builder().build();
         Long savedId1 = postService.save(post1);
         Assertions.assertThat(post1.getId()).isEqualTo(savedId1);
@@ -43,15 +42,29 @@ class CommentServiceTest {
     }
 
     @Test
-    void findComment(){
+    void findComment() {
         Post post = Post.builder().build();
         postService.save(post);
 
         Comment comment = Comment.builder().post(post).build();
-        Long saveId  = commentService.save(comment);
+        Long saveId = commentService.save(comment);
 
         Comment findedComment = commentService.findComment(saveId);
 
         assertThat(saveId).isEqualTo(findedComment.getId());
+    }
+
+    @Test
+    void findComments() {
+        Post post = Post.builder().build();
+        postService.save(post);
+
+        Comment comment = Comment.builder().post(post).build();
+
+        commentService.save(comment);
+
+        List<Comment> findedComments = commentService.findComments(comment.getPost().getId());
+
+        assertThat(findedComments.size()).isEqualTo(1);
     }
 }
