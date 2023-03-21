@@ -66,7 +66,6 @@ class CommentServiceTest {
 
         Comment comment = Comment.builder().post(post).build();
         Long commentId = commentService.save(comment);
-        System.out.println(commentId);
 
         Comment newComment = Comment.builder().contents("Hello World").build();
 
