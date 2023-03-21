@@ -22,12 +22,6 @@ class CommentServiceTest {
     @Autowired
     PostService postService;
 
-    @BeforeEach
-    void beforeEach() {
-        Post post1 = Post.builder().build();
-        Long savedId1 = postService.save(post1);
-        Assertions.assertThat(post1.getId()).isEqualTo(savedId1);
-    }
 
     @DisplayName("댓글 저장")
     @Test
