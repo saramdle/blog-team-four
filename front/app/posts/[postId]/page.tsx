@@ -2,6 +2,7 @@ import Container from "@/app/components/Container";
 import moment from "moment";
 import { Metadata } from "next";
 import Image from "next/image";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 async function getPost(id: number) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
@@ -54,8 +55,12 @@ export default async function Page({
       <Container>
         <p
           dangerouslySetInnerHTML={{ __html: post?.contents }}
-          className='prose max-w-none py-9 prose-p:m-0'
+          className='prose my-3 max-w-none prose-p:m-0'
         />
+        <div className='flex cursor-pointer justify-end gap-2 text-gray-600'>
+          <AiOutlineEdit size={30} />
+          <AiOutlineDelete size={30} />
+        </div>
         <div className='h-1 bg-primary' />
         <h3 className='text-center text-3xl'>Comments</h3>
       </Container>
