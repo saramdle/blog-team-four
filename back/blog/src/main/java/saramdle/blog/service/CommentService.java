@@ -17,7 +17,8 @@ public class CommentService {
 
     @Transactional
     public Long save(Comment comment) {
-        return repository.save(comment).getId();}
+        return repository.save(comment).getId();
+    }
 
     @Transactional(readOnly = true)
     public Comment findComment(Long id) {
@@ -29,5 +30,13 @@ public class CommentService {
         List<Comment> result = repository.findByPost_Id(postId);
 
         return result;
+    }
+
+    @Transactional
+    public Long updateComment(Long commentId, Comment updateParam) {
+        Comment comment = findComment(commentId);
+        comment.update(updateParam.getContents());
+
+        return commentId;
     }
 }

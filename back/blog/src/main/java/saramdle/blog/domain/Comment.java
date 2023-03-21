@@ -17,7 +17,7 @@ public class Comment {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String contents;
 
     @ManyToOne
@@ -40,4 +40,9 @@ public class Comment {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public void update(String contents) {
+        this.contents = contents;
+    }
+
 }
