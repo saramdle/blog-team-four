@@ -23,30 +23,30 @@ public class Post {
 
     private String title;
 
-    private String content;
+    private String contents;
 
     private String author;
 
     private String imgUrl;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     @Builder
-    private Post(String title, String content, String author, String imgUrl,
-                 LocalDateTime createAt, LocalDateTime updateAt) {
+    private Post(String title, String contents, String author, String imgUrl,
+                 LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.author = author;
         this.imgUrl = imgUrl;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public void update(String title, String author, String content) {
+    public void update(String title, String author, String contents) {
         this.title = title;
         this.author = author;
-        this.content = content;
+        this.contents = contents;
     }
 }
