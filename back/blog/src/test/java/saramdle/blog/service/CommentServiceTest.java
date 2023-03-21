@@ -57,8 +57,7 @@ class CommentServiceTest {
 
         commentService.save(comment);
 
-        List<Comment> findedComments = commentService.findComments(comment.getPost().getId());
-
-        assertThat(findedComments.size()).isEqualTo(1);
+        List<Comment> foundComments = commentService.findComments(post.getId());
+        assertThat(foundComments.size()).isEqualTo(1);
     }
 }
