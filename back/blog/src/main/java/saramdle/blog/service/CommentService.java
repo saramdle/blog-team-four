@@ -27,9 +27,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<Comment> findComments(Long postId) {
         List<Comment> result = repository.findByPost_Id(postId);
-        if (result.isEmpty()) {
-            throw new IllegalStateException(NOT_FOUND_COMMENT);
-        }
+
         return result;
     }
 }
