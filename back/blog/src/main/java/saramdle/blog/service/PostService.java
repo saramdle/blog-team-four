@@ -30,4 +30,17 @@ public class PostService {
     public List<Post> findPosts() {
         return repository.findAll();
     }
+
+    @Transactional
+    public Long update(Long postId, Post updateParam) {
+        Post post = findPost(postId);
+        post.update(updateParam.getTitle(), updateParam.getAuthor(), updateParam.getContents());
+        return postId;
+    }
+
+    @Transactional
+    public void delete(Long postId) {
+        Post post = findPost(postId);
+        repository.delete(post);
+    }
 }

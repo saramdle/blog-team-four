@@ -60,4 +60,33 @@ class PostServiceTest {
 
         assertThat(posts).hasSize(2);
     }
+
+    @Test
+    @DisplayName("게시물을 수정합니다.")
+    void update() {
+        Post post = Post.builder().title("제목1").author("작성자1").contents("본문1").build();
+        Post savedPost = postRepository.save(post);
+        Long postId = savedPost.getId();
+
+        Post updateParam = Post.builder().title("제목2").author("작성자2").contents("본문2").build();
+        postService.update(postId, updateParam);
+
+        Post findPost = postRepository.findById(postId).orElseThrow();
+        assertThat(findPost.getTitle()).isEqualTo(updateParam.getTitle());
+        assertThat(findPost.getAuthor()).isEqualTo(updateParam.getAuthor());
+        assertThat(findPost.getContents()).isEqualTo(updateParam.getContents());
+    }
+
+    @Test
+    @DisplayName("게시물을 삭제합니다.")
+    void delete() {
+        Post post = Post.builder().build();
+        Post savedPost = postRepository.save(post);
+        Long postId = savedPost.getId();
+
+        postService.delete(postId);
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts).isEmpty();
+    }
 }
