@@ -18,26 +18,26 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String content;
+    private String contents;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String commentWriter;
+    private String author;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateAt;
 
     @Builder
-    private Comment(Long id, String content, Post post, String commentWriter,
-                    LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Comment(Long id, String contents, Post post, String author,
+                    LocalDateTime createAt, LocalDateTime updateAt) {
         this.id = id;
-        this.content = content;
+        this.contents = contents;
         this.post = post;
-        this.commentWriter = commentWriter;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.author = author;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
     }
 }
