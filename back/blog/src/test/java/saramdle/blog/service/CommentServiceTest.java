@@ -42,4 +42,16 @@ class CommentServiceTest {
         assertThat(saveId).isEqualTo(comment.getId());
     }
 
+    @Test
+    void findComment(){
+        Post post = Post.builder().build();
+        postService.save(post);
+
+        Comment comment = Comment.builder().post(post).build();
+        Long saveId  = commentService.save(comment);
+
+        Comment findedComment = commentService.findComment(saveId);
+
+        assertThat(saveId).isEqualTo(findedComment.getId());
+    }
 }
