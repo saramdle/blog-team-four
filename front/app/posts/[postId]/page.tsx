@@ -2,7 +2,8 @@ import Container from "@/app/components/Container";
 import moment from "moment";
 import { Metadata } from "next";
 import Image from "next/image";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import Contents from "./Contents";
+import Mutation from "./Mutation";
 
 async function getPost(id: number) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
@@ -34,6 +35,7 @@ export default async function Page({
 }) {
   const postId = params.postId;
   const post: Post = await getPost(postId);
+
   return (
     <>
       <div className='main-img-ratio relative overflow-hidden'>
@@ -53,14 +55,8 @@ export default async function Page({
         <div className='absolute inset-0 bg-black/40' />
       </div>
       <Container>
-        <p
-          dangerouslySetInnerHTML={{ __html: post?.contents }}
-          className='prose my-3 max-w-none prose-p:m-0'
-        />
-        <div className='flex cursor-pointer justify-end gap-2 text-gray-600'>
-          <AiOutlineEdit size={30} />
-          <AiOutlineDelete size={30} />
-        </div>
+        <Contents contents={post?.contents} />
+        <Mutation postId={postId} title={post?.title} />
         <div className='h-1 bg-primary' />
         <h3 className='text-center text-3xl'>Comments</h3>
       </Container>
