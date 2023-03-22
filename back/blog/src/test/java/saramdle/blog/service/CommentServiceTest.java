@@ -1,17 +1,15 @@
 package saramdle.blog.service;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.Post;
+
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CommentServiceTest {
@@ -59,5 +57,22 @@ class CommentServiceTest {
 
         List<Comment> foundComments = commentService.findComments(post.getId());
         assertThat(foundComments.size()).isEqualTo(1);
+    }
+
+    @Test
+    void updateComments() {
+        Post post = Post.builder().build();
+        postService.save(post);
+
+        Comment comment = Comment.builder().post(post).build();
+        Long commentId = commentService.save(comment);
+
+        Comment newComment = Comment.builder().contents("Hello World").build();
+
+        Long updatedCommentId = commentService.updateComment(commentId, newComment);
+
+        Comment result = commentService.findComment(updatedCommentId);
+
+        assertThat(result.getContents()).isEqualTo("Hello World");
     }
 }
