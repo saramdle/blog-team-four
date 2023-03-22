@@ -39,4 +39,11 @@ public class CommentService {
 
         return commentId;
     }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = findComment(commentId);
+        repository.delete(comment);
+    }
+
 }

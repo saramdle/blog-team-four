@@ -32,7 +32,6 @@ class CommentServiceTest {
 
         assertThat(saveId).isEqualTo(comment.getId());
     }
-
     @Test
     void findComment() {
         Post post = Post.builder().build();
@@ -74,5 +73,22 @@ class CommentServiceTest {
         Comment result = commentService.findComment(updatedCommentId);
 
         assertThat(result.getContents()).isEqualTo("Hello World");
+    }
+
+    @Test
+    void deleteComment() {
+        Post post = Post.builder().build();
+        postService.save(post);
+
+        Comment comment = Comment.builder().post(post).build();
+        Long commentId = commentService.save(comment);
+
+        commentService.deleteComment(commentId);
+
+        try {
+            commentService.findComment(commentId);
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage()).isEqualTo("해당 댓글을 찾을 수 없습니다.");
+        }
     }
 }
