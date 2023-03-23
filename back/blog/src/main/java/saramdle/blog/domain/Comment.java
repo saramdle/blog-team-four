@@ -1,17 +1,22 @@
 package saramdle.blog.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import saramdle.blog.domain.common.BaseTimeEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @Column
@@ -26,23 +31,15 @@ public class Comment {
 
     private String author;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     @Builder
-    private Comment(Long id, String contents, Post post, String author,
-                    LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Comment(Long id, String contents, Post post, String author) {
         this.id = id;
         this.contents = contents;
         this.post = post;
         this.author = author;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public void update(String contents) {
         this.contents = contents;
     }
-
 }

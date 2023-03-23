@@ -1,6 +1,5 @@
 package saramdle.blog.domain;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +9,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import saramdle.blog.domain.common.BaseTimeEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @Column(name = "post_id")
@@ -29,19 +29,12 @@ public class Post {
 
     private String imgUrl;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     @Builder
-    private Post(String title, String contents, String author, String imgUrl,
-                 LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Post(String title, String contents, String author, String imgUrl) {
         this.title = title;
         this.contents = contents;
         this.author = author;
         this.imgUrl = imgUrl;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public void update(String title, String author, String contents) {
