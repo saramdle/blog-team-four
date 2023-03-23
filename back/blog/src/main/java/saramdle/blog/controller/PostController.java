@@ -1,15 +1,19 @@
 package saramdle.blog.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saramdle.blog.domain.Post;
+import saramdle.blog.domain.PostResponseDto;
 import saramdle.blog.domain.PostSaveDto;
 import saramdle.blog.service.PostService;
 
@@ -32,6 +36,28 @@ public class PostController {
                 .toUri();
 
         return ResponseEntity.created(location).body("게시물 등록 성공");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostResponseDto>> list() {
+        List<Post> posts = postService.findPosts();
+
+        List<PostResponseDto> dtos = posts.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    private PostResponseDto toDto(Post post) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .contents(post.getContents())
+                .author(post.getAuthor())
+                .imgUrl(post.getImgUrl())
+                .createdAt(post.getCreatedAt())
+                .build();
     }
 
     private Post toEntity(PostSaveDto postSaveDto) {
