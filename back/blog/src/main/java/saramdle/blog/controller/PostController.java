@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saramdle.blog.domain.Post;
+import saramdle.blog.domain.PostRequestDto;
 import saramdle.blog.domain.PostResponseDto;
-import saramdle.blog.domain.PostSaveDto;
 import saramdle.blog.service.PostService;
 
 @Slf4j
@@ -27,8 +27,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<String> newPost(@RequestBody PostSaveDto postSaveDto) {
-        Post post = toEntity(postSaveDto);
+    public ResponseEntity<String> newPost(@RequestBody PostRequestDto postRequestDto) {
+        Post post = toEntity(postRequestDto);
         Long postId = postService.save(post);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -69,12 +69,12 @@ public class PostController {
                 .build();
     }
 
-    private Post toEntity(PostSaveDto postSaveDto) {
+    private Post toEntity(PostRequestDto postRequestDto) {
         return Post.builder()
-                .title(postSaveDto.getTitle())
-                .contents(postSaveDto.getContents())
-                .author(postSaveDto.getAuthor())
-                .imgUrl(postSaveDto.getImgUrl())
+                .title(postRequestDto.getTitle())
+                .contents(postRequestDto.getContents())
+                .author(postRequestDto.getAuthor())
+                .imgUrl(postRequestDto.getImgUrl())
                 .build();
     }
 }
