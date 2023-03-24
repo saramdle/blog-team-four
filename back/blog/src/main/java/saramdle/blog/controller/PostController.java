@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,12 +51,18 @@ public class PostController {
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> detail(@PathVariable long id) {
         Post post = postService.findPost(id);
         PostResponseDto dto = toDto(post);
         return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponseDto> update(@PathVariable long id, @RequestBody PostRequestDto postRequestDto) {
+        Long postId = postService.update(id, toEntity(postRequestDto));
+        Post post = postService.findPost(postId);
+        return ResponseEntity.ok(toDto(post));
     }
 
     private PostResponseDto toDto(Post post) {
