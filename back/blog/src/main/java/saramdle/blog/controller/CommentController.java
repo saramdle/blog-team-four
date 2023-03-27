@@ -45,6 +45,14 @@ public class CommentController {
 
         return ResponseEntity.created(location).body("댓글 작성이 완료되었습니다.");
     }
+
+    @PutMapping("/{commentId}")
+    @ResponseBody
+    public ResponseEntity<CommentResponseDto> updateComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable Long commentId) {
+        commentId = commentService.updateComment(commentId, toEntity(commentRequestDto));
+        Comment comment = commentService.findComment(commentId);
+        return ResponseEntity.ok(toDto(comment));
+    }
     
     private Comment toEntity(CommentRequestDto commentRequestDto) {
         return Comment.builder()
