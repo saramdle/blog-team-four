@@ -25,4 +25,17 @@ public class ExceptionControllerAdvice {
 
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
+
+    @ExceptionHandler(BusinessException.class)
+    public final ResponseEntity<ExceptionResponse> handleBusinessException(BusinessException exception, WebRequest request) {
+        log.error(exception.getMessage());
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(exception.getStatus()).body(exceptionResponse);
+    }
 }
