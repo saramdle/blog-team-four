@@ -53,6 +53,15 @@
       "createdAt": "2023-03-18T07:03:10.813Z",
       "updatedAt": "2023-03-18T07:03:10.813Z",
       "id": 6
+    },
+    {
+      "title": "TEST",
+      "author": "홍길동",
+      "contents": "<p>내가 그린 </p><p><br></p><p>기린 그림</p><p><br></p><p>아주 작은</p><p><br></p><p><br></p>",
+      "imgUrl": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "createdAt": "2023-03-27T23:23:21.910Z",
+      "updatedAt": "2023-03-27T23:23:21.910Z",
+      "id": 7
     }
   ]
 }
