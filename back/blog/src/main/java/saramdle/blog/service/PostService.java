@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRepository;
+import saramdle.blog.domain.exception.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-    private static final String NOT_FOUND_POST = "해당 게시물을 찾을 수 없습니다.";
+    private static final String NOT_FOUND_POST = "ID[%s] 게시물을 찾을 수 없습니다.";
 
     private final PostRepository repository;
 
@@ -23,7 +24,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post findPost(Long postId) {
         return repository.findById(postId)
-                .orElseThrow(() -> new IllegalStateException(NOT_FOUND_POST));
+                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_POST, postId)));
     }
 
     @Transactional(readOnly = true)
