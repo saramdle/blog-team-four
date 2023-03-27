@@ -53,6 +53,13 @@ public class CommentController {
         Comment comment = commentService.findComment(commentId);
         return ResponseEntity.ok(toDto(comment));
     }
+
+    @DeleteMapping("/{commentId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok("댓글 삭제 성공");
+    }
     
     private Comment toEntity(CommentRequestDto commentRequestDto) {
         return Comment.builder()
