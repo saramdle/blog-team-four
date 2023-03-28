@@ -1,15 +1,16 @@
 package saramdle.blog.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.Post;
-
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import saramdle.blog.domain.exception.NotFoundException;
 
 @SpringBootTest
 class CommentServiceTest {
@@ -85,10 +86,8 @@ class CommentServiceTest {
 
         commentService.deleteComment(commentId);
 
-        try {
-            commentService.findComment(commentId);
-        } catch (IllegalStateException e) {
-            assertThat(e.getMessage()).isEqualTo("해당 댓글을 찾을 수 없습니다.");
-        }
+        assertThatThrownBy(() -> commentService.findComment(commentId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("댓글을 찾을 수 없습니다.");
     }
 }
