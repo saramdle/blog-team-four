@@ -8,13 +8,15 @@ export default function CommentInput() {
     setCommentInput(event.target.value);
   };
   return (
-    <div>
+    <div className='mt-5'>
+      <div className='h-[1px] bg-primary' />
+      <h2 className='p-2 text-lg font-bold text-primary'>댓글 n개</h2>
       <form method='POST' className='relative'>
         <textarea
           name='comment'
           id='comment'
           rows={3}
-          className='w-full rounded-md bg-primary/5 p-3'
+          className='w-full resize-none rounded-md bg-primary/5 p-3'
           placeholder='댓글을 남겨주세요'
           value={commentInput}
           onChange={handleChange}
