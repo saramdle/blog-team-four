@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRepository;
+import saramdle.blog.domain.exception.NotFoundException;
 
 @Transactional
 @SpringBootTest
@@ -45,7 +46,7 @@ class PostServiceTest {
     @DisplayName("존재하지 않은 게시물을 조회할 경우 예외가 발생합니다.")
     void findPostFail() {
         assertThatThrownBy(() -> postService.findPost(100L))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
