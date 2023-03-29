@@ -27,12 +27,15 @@ export default async function Comments({ postId }: { postId: number }) {
   );
 
   return (
-    <div className='my-10 flex flex-col gap-4 shadow-sm'>
+    <div className='my-10 flex  flex-col gap-4 shadow-sm'>
       {selectedComments.map((comment: Comment) => (
-        <div key={comment.id} className='flex justify-between bg-white p-3'>
+        <div
+          key={comment.id}
+          className='flex h-[100px] justify-between rounded-md bg-white p-3'
+        >
           <div>
             <div className='text-sm font-bold'>{comment.author}</div>
-            <div className='py-2 text-xl'>{comment.contents}</div>
+            <div className='py-1 text-xl'>{comment.contents}</div>
             <div className='text-sx text-gray-400'>
               {moment(moment(comment.createdAt).format("YYYY-MM-DD")).fromNow()}
             </div>

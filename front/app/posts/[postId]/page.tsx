@@ -1,11 +1,8 @@
 import Container from "@/app/components/Container";
 import { Metadata } from "next";
 import Image from "next/image";
-<<<<<<< HEAD
 import CommentInput from "./CommentInput";
-=======
 import Comments from "./Comments";
->>>>>>> 0074db2 (feat : 코멘트 데이터 server side fetching)
 
 async function getPost(id: number) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
@@ -52,12 +49,9 @@ export default async function Page({
       />
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
-<<<<<<< HEAD
       <CommentInput />
-=======
       {/* @ts-expect-error Server Component */}
       <Comments postId={postId} />
->>>>>>> 0074db2 (feat : 코멘트 데이터 server side fetching)
     </Container>
   );
 }

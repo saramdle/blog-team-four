@@ -16,7 +16,7 @@ export default function CommentInput() {
           name='comment'
           id='comment'
           rows={3}
-          className='w-full resize-none rounded-md bg-primary/5 p-3'
+          className='h-[100px] w-full resize-none rounded-md bg-primary/5 p-3'
           placeholder='댓글을 남겨주세요'
           value={commentInput}
           onChange={handleChange}

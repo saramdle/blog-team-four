@@ -20,7 +20,7 @@ export default function RootLayout({
         <div className='flex h-screen flex-col'>
           <Navbar />
           <div className='flex-grow'>{children}</div>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </body>
     </html>
