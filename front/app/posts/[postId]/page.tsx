@@ -4,7 +4,7 @@ import Image from "next/image";
 import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 
-async function getPost(id: number) {
+async function getPost(id: string) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
     next: { revalidate: 60 * 60 },
   });
@@ -18,7 +18,7 @@ export async function generateMetadata({
   params,
 }: {
   params: {
-    postId: number;
+    postId: string;
   };
 }): Promise<Metadata> {
   const post = await getPost(params.postId);
@@ -29,10 +29,12 @@ export default async function Page({
   params,
 }: {
   params: {
-    postId: number;
+    postId: string;
   };
 }) {
   const postId = params.postId;
+  console.log(postId);
+  console.log(typeof postId);
   const post: Post = await getPost(postId);
   return (
     <Container>
@@ -49,7 +51,7 @@ export default async function Page({
       />
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
-      <CommentInput />
+      <CommentInput postId={postId} />
       {/* @ts-expect-error Server Component */}
       <Comments postId={postId} />
     </Container>
