@@ -2,6 +2,7 @@ import Container from "@/app/components/Container";
 import { Metadata } from "next";
 import Image from "next/image";
 import CommentInput from "./CommentInput";
+import Comments from "./Comments";
 
 async function getPost(id: number) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
@@ -49,6 +50,8 @@ export default async function Page({
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
       <CommentInput />
+      {/* @ts-expect-error Server Component */}
+      <Comments postId={postId} />
     </Container>
   );
 }

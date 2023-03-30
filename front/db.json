@@ -63,5 +63,39 @@
       "updatedAt": "2023-03-27T23:23:21.910Z",
       "id": 7
     }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "author": "우정",
+      "contents": "testing message!!11111111111",
+      "post": 6,
+      "createdAt": "2023-03-01 11:47:49.164",
+      "updatedAt": "2023-03-01 11:48:09.165"
+    },
+    {
+      "id": 2,
+      "author": "우정",
+      "contents": "testing message!!222222222222",
+      "post": 6,
+      "createdAt": "2023-03-01 11:47:49.164",
+      "updatedAt": "2023-03-01 11:48:09.165"
+    },
+    {
+      "id": 3,
+      "author": "우정",
+      "contents": "testing message!!333333333333",
+      "post": 6,
+      "createdAt": "2023-03-01 11:47:49.164",
+      "updatedAt": "2023-03-01 11:48:09.165"
+    },
+    {
+      "id": 4,
+      "author": "정우",
+      "contents": "testing message!!4444",
+      "post": 5,
+      "createdAt": "2023-03-01 11:47:49.164",
+      "updatedAt": "2023-03-01 11:48:09.165"
+    }
   ]
 }
