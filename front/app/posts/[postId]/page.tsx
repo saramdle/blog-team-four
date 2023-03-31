@@ -33,8 +33,6 @@ export default async function Page({
   };
 }) {
   const postId = params.postId;
-  console.log(postId);
-  console.log(typeof postId);
   const post: Post = await getPost(postId);
   return (
     <Container>
