@@ -22,9 +22,9 @@ async function getComments() {
 
 export default async function Comments({ postId }: { postId: number }) {
   const comments = await getComments();
-  const selectedComments = comments.filter(
-    (comment: Comment) => comment.post == postId
-  );
+  const selectedComments = comments
+    .filter((comment: Comment) => comment.post == postId)
+    .sort((a: Comment, b: Comment) => b.id - a.id);
 
   return (
     <div className='my-10 flex  flex-col gap-4 shadow-sm'>
