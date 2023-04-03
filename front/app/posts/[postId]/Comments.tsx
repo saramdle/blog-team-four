@@ -1,4 +1,7 @@
+"use client";
+
 import moment from "moment";
+import { useState, useEffect } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 export const fetchCache = "force-no-store";
@@ -12,23 +15,30 @@ type Comment = {
   updatedAt: string;
 };
 
-async function getComments() {
-  const res = await fetch(`http://localhost:4000/comments`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
+export default function Comments({ postId }: { postId: number }) {
+  const [comments, setComments] = useState<Comment[]>();
+  const getComments = () => {
+    fetch("http://localhost:4000/comments")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setComments(data);
+      });
+  };
+  useEffect(() => {
+    getComments();
+  }, []);
 
-export default async function Comments({ postId }: { postId: number }) {
-  const comments = await getComments();
-  const selectedComments = comments
-    .filter((comment: Comment) => comment.post == postId)
-    .sort((a: Comment, b: Comment) => b.id - a.id);
+  const selectedComments =
+    comments &&
+    comments
+      .filter((comment: Comment) => comment.post == postId)
+      .sort((a: Comment, b: Comment) => b.id - a.id);
 
   return (
     <div className='my-10 flex  flex-col gap-4 shadow-sm'>
-      {selectedComments.map((comment: Comment) => (
+      {selectedComments?.map((comment: Comment) => (
         <div
           key={comment.id}
           className='flex h-[100px] justify-between rounded-md bg-white p-3'
