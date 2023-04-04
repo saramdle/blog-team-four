@@ -2,9 +2,12 @@ package saramdle.blog.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,21 +28,23 @@ public class Post extends BaseTimeEntity {
 
     private String contents;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String imgUrl;
 
     @Builder
-    private Post(String title, String contents, String author, String imgUrl) {
+    private Post(String title, String contents, User user, String imgUrl) {
         this.title = title;
         this.contents = contents;
-        this.author = author;
+        this.user = user;
         this.imgUrl = imgUrl;
     }
 
-    public void update(String title, String author, String contents) {
+    public void update(String title, User user, String contents) {
         this.title = title;
-        this.author = author;
+        this.user = user;
         this.contents = contents;
     }
 }

@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 public class PostRequestDto {
     private String title;
     private String contents;
-    private String author;
+    private User user;
     private String imgUrl;
 
     @Builder
-    private PostRequestDto(String title, String contents, String author, String imgUrl) {
+    private PostRequestDto(String title, String contents, User user, String imgUrl) {
         this.title = title;
         this.contents = contents;
-        this.author = author;
+        this.user = user;
         this.imgUrl = imgUrl;
     }
 }
