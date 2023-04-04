@@ -14,7 +14,7 @@ type Comment = {
   updatedAt: string;
 };
 
-export default function Comments({ postId }: { postId: number }) {
+export default function Comments({ postId }: { postId: string }) {
   const [comments, setComments] = useState<Comment[]>();
   const getComments = () => {
     fetch("http://localhost:4000/comments")
@@ -30,8 +30,21 @@ export default function Comments({ postId }: { postId: number }) {
   }, []);
 
   const selectedComments = comments
-    ?.filter((comment: Comment) => comment.post == postId)
+    ?.filter((comment: Comment) => comment.post === parseInt(postId))
     .sort((a: Comment, b: Comment) => b.id - a.id);
+
+  const updateComment = (updatedComment: Comment) => {
+    setComments((prevComments) =>
+      prevComments?.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment
+      )
+    );
+  };
+  const deleteComment = (deletedCommentId: number) => {
+    setComments((prevComments) =>
+      prevComments?.filter((comment) => comment.id !== deletedCommentId)
+    );
+  };
 
   return (
     <div className='my-10 flex flex-col gap-4 shadow-sm'>
@@ -42,6 +55,9 @@ export default function Comments({ postId }: { postId: number }) {
           createdAt={comment.createdAt}
           id={comment.id}
           key={comment.id}
+          postId={postId}
+          updateComment={updateComment}
+          filterDelete={deleteComment}
         />
       ))}
     </div>

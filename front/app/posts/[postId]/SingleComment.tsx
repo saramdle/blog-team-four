@@ -6,6 +6,9 @@ type Props = {
   author: string;
   contents: string;
   createdAt: string;
+  postId: string;
+  updateComment: (updatedComment: any) => void;
+  deleteComment: (id: number) => void;
 };
 
 export default function SingleComment({
@@ -13,17 +16,55 @@ export default function SingleComment({
   author,
   contents,
   createdAt,
+  postId,
+  updateComment,
+  deleteComment,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [editedContents, setEditedContents] = useState(contents);
-  console.log(editedContents);
 
-  const handleEdit = () => {
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsEdit(!isEdit);
+    const editData = {
+      id,
+
+      // 기존 author유지
+      author: "유지",
+      contents: editedContents,
+      post: parseInt(postId),
+
+      // db에서 자동생성될 예정
+      createdAt,
+      updatedAt: new Date(),
+    };
+    const response = await fetch(`http://localhost:4000/comments/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editData),
+    });
+    const updatedComment = await response.json();
+    updateComment(updatedComment);
   };
+
   const handleCancelEdit = () => {
     setIsEdit(false);
     setEditedContents(contents);
+  };
+
+  const handleDelete = async () => {
+    const response = await fetch(`http://localhost:4000/comments/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      await response.json();
+      deleteComment(id);
+    } else {
+      console.error("Failed to delete comment");
+    }
   };
 
   return (
@@ -36,7 +77,9 @@ export default function SingleComment({
           <div className='text-sm font-bold'>{author}</div>
           {isEdit ? (
             <div className='flex gap-1'>
-              <button className='btn-primary btn-sm btn'>수정</button>
+              <button className='btn-primary btn-sm btn' onClick={handleUpdate}>
+                수정
+              </button>
               <button
                 className='btn-outline btn-sm btn'
                 onClick={handleCancelEdit}
@@ -49,17 +92,18 @@ export default function SingleComment({
               <AiOutlineEdit
                 size={20}
                 className='cursor-pointer hover:scale-125 hover:text-primary'
-                onClick={handleEdit}
+                onClick={() => setIsEdit(!isEdit)}
               />
               <AiOutlineDelete
                 size={20}
                 className='cursor-pointer hover:scale-125 hover:text-primary'
+                onClick={handleDelete}
               />
             </div>
           )}
         </div>
         {isEdit ? (
-          <form method='POST' className='relative'>
+          <form method='PUT' className='relative'>
             <textarea
               name='comment'
               id='comment'
