@@ -1,8 +1,7 @@
 "use client";
 
-import moment from "moment";
 import { useState, useEffect } from "react";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import SingleComment from "./SingleComment";
 
 export const fetchCache = "force-no-store";
 
@@ -30,37 +29,20 @@ export default function Comments({ postId }: { postId: number }) {
     getComments();
   }, []);
 
-  const selectedComments =
-    comments &&
-    comments
-      .filter((comment: Comment) => comment.post == postId)
-      .sort((a: Comment, b: Comment) => b.id - a.id);
+  const selectedComments = comments
+    ?.filter((comment: Comment) => comment.post == postId)
+    .sort((a: Comment, b: Comment) => b.id - a.id);
 
   return (
-    <div className='my-10 flex  flex-col gap-4 shadow-sm'>
+    <div className='my-10 flex flex-col gap-4 shadow-sm'>
       {selectedComments?.map((comment: Comment) => (
-        <div
+        <SingleComment
+          author={comment.author}
+          contents={comment.contents}
+          createdAt={comment.createdAt}
+          id={comment.id}
           key={comment.id}
-          className='flex h-[100px] justify-between rounded-md bg-white p-3'
-        >
-          <div>
-            <div className='text-sm font-bold'>{comment.author}</div>
-            <div className='py-1 text-xl'>{comment.contents}</div>
-            <div className='text-sx text-gray-400'>
-              {moment(moment(comment.createdAt).format("YYYY-MM-DD")).fromNow()}
-            </div>
-          </div>
-          <div className='text- flex gap-2 text-gray-500'>
-            <AiOutlineEdit
-              size={20}
-              className='cursor-pointer hover:scale-125 hover:text-primary'
-            />
-            <AiOutlineDelete
-              size={20}
-              className='cursor-pointer hover:scale-125 hover:text-primary'
-            />
-          </div>
-        </div>
+        />
       ))}
     </div>
   );
