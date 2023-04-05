@@ -65,17 +65,24 @@ class PostServiceTest {
     @Test
     @DisplayName("게시물을 수정합니다.")
     void update() {
-        Post post = Post.builder().title("제목1").author("작성자1").contents("본문1").build();
-        Post savedPost = postRepository.save(post);
-        Long postId = savedPost.getId();
+        Post post = Post.builder()
+                .title("제목1")
+                .contents("본문1")
+                .imgUrl("https://t1.daumcdn.net/cfile/tistory/993F75355A692ABD32")
+                .build();
+        Long postId = postRepository.save(post).getId();
 
-        Post updateParam = Post.builder().title("제목2").author("작성자2").contents("본문2").build();
+        Post updateParam = Post.builder()
+                .title("제목2")
+                .contents("본문2")
+                .imgUrl("https://img.siksinhot.com/article/1638761259231391.jpg")
+                .build();
         postService.update(postId, updateParam);
 
         Post findPost = postRepository.findById(postId).orElseThrow();
         assertThat(findPost.getTitle()).isEqualTo(updateParam.getTitle());
-        assertThat(findPost.getAuthor()).isEqualTo(updateParam.getAuthor());
         assertThat(findPost.getContents()).isEqualTo(updateParam.getContents());
+        assertThat(findPost.getImgUrl()).isEqualTo(updateParam.getImgUrl());
     }
 
     @Test

@@ -42,9 +42,9 @@ public class Post extends BaseTimeEntity {
         this.imgUrl = imgUrl;
     }
 
-    public void update(String title, User user, String contents) {
+    public void update(String title, String contents, String imgUrl) {
         this.title = title;
-        this.user = user;
         this.contents = contents;
+        this.imgUrl = imgUrl;
     }
 }
