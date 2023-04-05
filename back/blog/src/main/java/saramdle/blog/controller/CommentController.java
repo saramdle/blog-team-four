@@ -1,19 +1,25 @@
 package saramdle.blog.controller;
 
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.CommentRequestDto;
 import saramdle.blog.domain.CommentResponseDto;
 import saramdle.blog.service.CommentService;
 import saramdle.blog.service.PostService;
-
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -64,7 +70,7 @@ public class CommentController {
     private Comment toEntity(CommentRequestDto commentRequestDto) {
         return Comment.builder()
                 .contents(commentRequestDto.getContents())
-                .author(commentRequestDto.getAuthor())
+                .user(commentRequestDto.getUser())
                 .post(postService.findPost(commentRequestDto.getPostId()))
                 .build();
     }
@@ -73,7 +79,7 @@ public class CommentController {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .contents(comment.getContents())
-                .author(comment.getAuthor())
+                .user(comment.getUser())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }
