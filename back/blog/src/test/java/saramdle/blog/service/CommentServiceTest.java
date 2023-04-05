@@ -7,10 +7,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.exception.NotFoundException;
 
+@Transactional
 @SpringBootTest
 class CommentServiceTest {
 
