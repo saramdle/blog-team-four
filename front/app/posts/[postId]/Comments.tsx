@@ -57,7 +57,7 @@ export default function Comments({ postId }: { postId: string }) {
           key={comment.id}
           postId={postId}
           updateComment={updateComment}
-          filterDelete={deleteComment}
+          deleteComment={deleteComment}
         />
       ))}
     </div>
