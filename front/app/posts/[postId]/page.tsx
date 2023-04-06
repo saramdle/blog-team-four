@@ -50,7 +50,6 @@ export default async function Page({
       <p>{post?.author}</p>
       <p>{post?.createdAt}</p>
       <CommentInput postId={postId} />
-      {/* @ts-expect-error Server Component */}
       <Comments postId={postId} />
     </Container>
   );

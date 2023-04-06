@@ -13,7 +13,7 @@ export default function CommentInput({ postId }: { postId: string }) {
       // 로그인된 user의 이름이 들어갈 예정
       author: "정우",
       contents: commentInput,
-      post: postId,
+      post: parseInt(postId),
       // db에서 자동생성될 예정
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -42,7 +42,6 @@ export default function CommentInput({ postId }: { postId: string }) {
           value={commentInput}
           onChange={handleChange}
         ></textarea>
-
         <p
           className={`absolute bottom-4 left-4 z-20 font-bold  ${
             commentInput.length > 100 ? "text-red-500" : "text-gray-500"
@@ -50,7 +49,7 @@ export default function CommentInput({ postId }: { postId: string }) {
         >
           {commentInput.length}/100
         </p>
-        <button className='btn-primary btn-sm btn absolute bottom-3 right-2'>
+        <button className='btn-primary btn-sm btn absolute bottom-5 right-4'>
           Send
         </button>
       </form>
