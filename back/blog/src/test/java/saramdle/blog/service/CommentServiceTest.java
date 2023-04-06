@@ -4,14 +4,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.exception.NotFoundException;
 
+@Transactional
 @SpringBootTest
 class CommentServiceTest {
 
@@ -21,8 +22,6 @@ class CommentServiceTest {
     @Autowired
     PostService postService;
 
-
-    @DisplayName("댓글 저장")
     @Test
     void save() {
         Post post = Post.builder().build();
@@ -33,6 +32,7 @@ class CommentServiceTest {
 
         assertThat(saveId).isEqualTo(comment.getId());
     }
+
     @Test
     void findComment() {
         Post post = Post.builder().build();
@@ -52,15 +52,15 @@ class CommentServiceTest {
         postService.save(post);
 
         Comment comment = Comment.builder().post(post).build();
-
         commentService.save(comment);
 
         List<Comment> foundComments = commentService.findComments(post.getId());
+
         assertThat(foundComments.size()).isEqualTo(1);
     }
 
     @Test
-    void updateComments() {
+    void updateComment() {
         Post post = Post.builder().build();
         postService.save(post);
 
@@ -68,11 +68,9 @@ class CommentServiceTest {
         Long commentId = commentService.save(comment);
 
         Comment newComment = Comment.builder().contents("Hello World").build();
-
         Long updatedCommentId = commentService.updateComment(commentId, newComment);
 
         Comment result = commentService.findComment(updatedCommentId);
-
         assertThat(result.getContents()).isEqualTo("Hello World");
     }
 

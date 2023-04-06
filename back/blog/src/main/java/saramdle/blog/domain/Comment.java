@@ -2,6 +2,7 @@ package saramdle.blog.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,18 +26,20 @@ public class Comment extends BaseTimeEntity {
 
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
-    private Comment(Long id, String contents, Post post, String author) {
+    private Comment(Long id, String contents, Post post, User user) {
         this.id = id;
         this.contents = contents;
         this.post = post;
-        this.author = author;
+        this.user = user;
     }
 
     public void update(String contents) {

@@ -35,7 +35,7 @@ public class PostService {
     @Transactional
     public Long update(Long postId, Post updateParam) {
         Post post = findPost(postId);
-        post.update(updateParam.getTitle(), updateParam.getAuthor(), updateParam.getContents());
+        post.update(updateParam.getTitle(), updateParam.getContents(), updateParam.getImgUrl());
         return postId;
     }
 

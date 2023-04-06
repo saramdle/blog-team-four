@@ -9,14 +9,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
 
   profiles:
     include: oauth
 
 logging:
-  level:
-    org.hibernate.type.descriptor.sql: trace
+  level.org.hibernate:
+    SQL: debug
+    type.descriptor.sql.BasicBinder: trace

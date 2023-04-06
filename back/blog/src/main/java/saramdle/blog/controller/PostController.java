@@ -77,7 +77,7 @@ public class PostController {
                 .id(post.getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
-                .author(post.getAuthor())
+                .user(post.getUser())
                 .imgUrl(post.getImgUrl())
                 .createdAt(post.getCreatedAt())
                 .build();
@@ -87,7 +87,7 @@ public class PostController {
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .contents(postRequestDto.getContents())
-                .author(postRequestDto.getAuthor())
+                .user(postRequestDto.getUser())
                 .imgUrl(postRequestDto.getImgUrl())
                 .build();
     }
