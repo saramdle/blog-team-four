@@ -7,8 +7,6 @@ type Props = {
   contents: string;
   createdAt: string;
   postId: string;
-  updateComment: (updatedComment: any) => void;
-  deleteComment: (id: number) => void;
 };
 
 export default function SingleComment({
@@ -17,8 +15,6 @@ export default function SingleComment({
   contents,
   createdAt,
   postId,
-  updateComment,
-  deleteComment,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [editedContents, setEditedContents] = useState(contents);
@@ -45,8 +41,6 @@ export default function SingleComment({
       },
       body: JSON.stringify(editData),
     });
-    const updatedComment = await response.json();
-    updateComment(updatedComment);
   };
 
   const handleCancelEdit = () => {
@@ -61,7 +55,6 @@ export default function SingleComment({
 
     if (response.ok) {
       await response.json();
-      deleteComment(id);
     } else {
       console.error("Failed to delete comment");
     }
