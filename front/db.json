@@ -75,22 +75,6 @@
     },
     {
       "author": "정우",
-      "contents": "123",
-      "post": 6,
-      "createdAt": "2023-04-04T02:44:03.914Z",
-      "updatedAt": "2023-04-04T02:44:03.914Z",
-      "id": 8
-    },
-    {
-      "author": "정우",
-      "contents": "댓글 생성",
-      "post": 6,
-      "createdAt": "2023-04-04T02:58:19.325Z",
-      "updatedAt": "2023-04-04T02:58:19.325Z",
-      "id": 9
-    },
-    {
-      "author": "정우",
       "contents": "댓글",
       "post": 5,
       "createdAt": "2023-04-06T01:11:09.262Z",
@@ -187,43 +171,11 @@
     },
     {
       "author": "정우",
-      "contents": "2",
+      "contents": "123123",
       "post": 6,
-      "createdAt": "2023-04-06T01:51:56.122Z",
-      "updatedAt": "2023-04-06T01:51:56.122Z",
+      "createdAt": "2023-04-06T02:11:22.101Z",
+      "updatedAt": "2023-04-06T02:11:22.101Z",
       "id": 22
-    },
-    {
-      "author": "정우",
-      "contents": "33333",
-      "post": 6,
-      "createdAt": "2023-04-06T01:52:00.929Z",
-      "updatedAt": "2023-04-06T01:52:00.929Z",
-      "id": 23
-    },
-    {
-      "author": "정우",
-      "contents": "444",
-      "post": 6,
-      "createdAt": "2023-04-06T01:52:22.994Z",
-      "updatedAt": "2023-04-06T01:52:22.994Z",
-      "id": 24
-    },
-    {
-      "author": "정우",
-      "contents": "5555",
-      "post": 6,
-      "createdAt": "2023-04-06T01:52:31.869Z",
-      "updatedAt": "2023-04-06T01:52:31.869Z",
-      "id": 25
-    },
-    {
-      "author": "정우",
-      "contents": "123",
-      "post": 6,
-      "createdAt": "2023-04-06T01:52:52.642Z",
-      "updatedAt": "2023-04-06T01:52:52.642Z",
-      "id": 26
     }
   ]
 }

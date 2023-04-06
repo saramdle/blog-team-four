@@ -1,4 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 type Props = {
@@ -16,6 +19,10 @@ export default function SingleComment({
   createdAt,
   postId,
 }: Props) {
+  let commentToastId: string;
+
+  const client = useQueryClient();
+
   const [isEdit, setIsEdit] = useState(false);
   const [editedContents, setEditedContents] = useState(contents);
 
@@ -48,16 +55,28 @@ export default function SingleComment({
     setEditedContents(contents);
   };
 
-  const handleDelete = async () => {
-    const response = await fetch(`http://localhost:4000/comments/${id}`, {
-      method: "DELETE",
-    });
-
-    if (response.ok) {
-      await response.json();
-    } else {
-      console.error("Failed to delete comment");
+  const { mutate: mutateDeleteComment } = useMutation(
+    async () => await axios.delete(`http://localhost:4000/comments/${id}`),
+    {
+      onSuccess: () => {
+        toast.success("댓글을 삭제하였습니다.", { id: commentToastId });
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          toast.error("댓글 삭제 중 에러 발생", { id: commentToastId });
+        }
+      },
+      onSettled: () => {
+        client.invalidateQueries(["comments"]);
+      },
     }
+  );
+
+  const handleDelete = async () => {
+    if (confirm("댓글을 삭제하시겠습니까?")) {
+      mutateDeleteComment();
+    }
+    return;
   };
 
   return (
