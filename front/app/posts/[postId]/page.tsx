@@ -5,9 +5,7 @@ import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 
 async function getPost(id: string) {
-  const res = await fetch(`http://localhost:4000/posts/${id}`, {
-    cache: "no-cache",
-  });
+  const res = await fetch(`http://localhost:4000/posts/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -34,6 +32,7 @@ export default async function Page({
 }) {
   const postId = params.postId;
   const post: Post = await getPost(postId);
+
   return (
     <>
       <MainImage src={post?.imgUrl} title={post?.title} />

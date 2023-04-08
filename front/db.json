@@ -53,17 +53,45 @@
       "createdAt": "2023-03-18T07:03:10.813Z",
       "updatedAt": "2023-03-18T07:03:10.813Z",
       "id": 6
+    },
+    {
+      "title": "제목",
+      "author": "홍길동",
+      "contents": "<p>1123</p>",
+      "imgUrl": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "createdAt": "2023-04-08T20:35:52.156Z",
+      "updatedAt": "2023-04-08T20:35:52.156Z",
+      "id": 7
+    },
+    {
+      "title": "테스트",
+      "author": "홍길동",
+      "contents": "<p>123</p>",
+      "imgUrl": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "createdAt": "2023-04-08T20:36:18.541Z",
+      "updatedAt": "2023-04-08T20:36:18.541Z",
+      "id": 8
+    },
+    {
+      "title": "제목",
+      "author": "홍길동",
+      "contents": "<p>테스트</p>",
+      "imgUrl": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "createdAt": "2023-04-08T20:39:01.839Z",
+      "updatedAt": "2023-04-08T20:39:01.839Z",
+      "id": 9
+    },
+    {
+      "title": "포스트 생성 후 이동",
+      "author": "홍길동",
+      "contents": "<p>123</p>",
+      "imgUrl": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "createdAt": "2023-04-08T20:39:35.932Z",
+      "updatedAt": "2023-04-08T20:39:35.932Z",
+      "id": 10
     }
   ],
   "comments": [
-    {
-      "author": "정우",
-      "contents": "test",
-      "post": 8,
-      "createdAt": "2023-03-31T02:43:57.823Z",
-      "updatedAt": "2023-03-31T02:43:57.823Z",
-      "id": 6
-    },
     {
       "author": "정우",
       "contents": "댓글",

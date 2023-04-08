@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 
 export default function Write() {
+  const [isloading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   //hydration error
@@ -41,8 +43,9 @@ export default function Write() {
     []
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
     const postingData = {
       title,
 
@@ -58,6 +61,7 @@ export default function Write() {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
     const response = await fetch("http://localhost:4000/posts", {
       method: "POST",
       headers: {
@@ -65,6 +69,10 @@ export default function Write() {
       },
       body: JSON.stringify(postingData),
     });
+    setIsLoading(false);
+    router.replace("/posts");
+    router.refresh();
+    toast.success("게시물이 생성되었습니다.");
     return response.json();
   };
 
@@ -100,7 +108,13 @@ export default function Write() {
           >
             나가기
           </div>
-          <button className='btn-primary btn mt-10 w-max'>발행</button>
+          <button
+            className='btn-primary btn mt-10 w-max'
+            onClick={handleSubmit}
+            disabled={isloading}
+          >
+            발행
+          </button>
         </div>
       </form>
       <div className='flex-1 border-l-2 p-3'>
