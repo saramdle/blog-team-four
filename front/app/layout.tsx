@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import TanStackWrapper from "./lib/TanStackWrapper";
 
 export const metadata: Metadata = {
   title: "졸린우정",
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <div className='flex h-screen flex-col'>
-          <Navbar />
-          <div className='flex-grow'>{children}</div>
-          {/* <Footer /> */}
-        </div>
+        <TanStackWrapper>
+          <div className='flex h-screen flex-col'>
+            <Navbar />
+            <div className='flex-grow'>{children}</div>
+            {/* <Footer /> */}
+          </div>
+        </TanStackWrapper>
       </body>
     </html>
   );

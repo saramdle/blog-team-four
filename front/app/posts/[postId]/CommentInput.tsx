@@ -1,12 +1,34 @@
 "use client";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function CommentInput({ postId }: { postId: string }) {
+  let toastCommentId: string;
+  const queryClient = useQueryClient();
   const [commentInput, setCommentInput] = useState<string>("");
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(event.target.value);
   };
+
+  const { mutate: mutateAddComment } = useMutation({
+    mutationFn: async (comment: any) => {
+      await axios.post("http://localhost:4000/comments", comment);
+    },
+    onSuccess: () => {
+      setCommentInput("");
+      toast.success("댓글이 생성되었습니다", { id: toastCommentId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("댓글 생성 중 에러 발생", { id: toastCommentId });
+      }
+    },
+    onSettled: () => queryClient.invalidateQueries(["comments"]),
+  });
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const commentingData = {
@@ -18,14 +40,7 @@ export default function CommentInput({ postId }: { postId: string }) {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const response = await fetch("http://localhost:4000/comments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(commentingData),
-    });
-    return response.json();
+    mutateAddComment(commentingData);
   };
 
   return (

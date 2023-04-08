@@ -1,5 +1,7 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import SingleComment from "./SingleComment";
 
@@ -15,36 +17,19 @@ type Comment = {
 };
 
 export default function Comments({ postId }: { postId: string }) {
-  const [comments, setComments] = useState<Comment[]>();
-  const getComments = () => {
-    fetch("http://localhost:4000/comments")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setComments(data);
-      });
-  };
-  useEffect(() => {
-    getComments();
-  }, []);
+  const getComments = () => axios.get("http://localhost:4000/comments");
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["comments"],
+    queryFn: getComments,
+  });
 
-  const selectedComments = comments
+  const selectedComments = data?.data
     ?.filter((comment: Comment) => comment.post === parseInt(postId))
     .sort((a: Comment, b: Comment) => b.id - a.id);
 
-  const updateComment = (updatedComment: Comment) => {
-    setComments((prevComments) =>
-      prevComments?.map((comment) =>
-        comment.id === updatedComment.id ? updatedComment : comment
-      )
-    );
-  };
-  const deleteComment = (deletedCommentId: number) => {
-    setComments((prevComments) =>
-      prevComments?.filter((comment) => comment.id !== deletedCommentId)
-    );
-  };
+  if (error) error;
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className='my-10 flex flex-col gap-4 shadow-sm'>
@@ -56,8 +41,6 @@ export default function Comments({ postId }: { postId: string }) {
           id={comment.id}
           key={comment.id}
           postId={postId}
-          updateComment={updateComment}
-          filterDelete={deleteComment}
         />
       ))}
     </div>

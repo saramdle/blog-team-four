@@ -1,4 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 type Props = {
@@ -7,8 +10,6 @@ type Props = {
   contents: string;
   createdAt: string;
   postId: string;
-  updateComment: (updatedComment: any) => void;
-  deleteComment: (id: number) => void;
 };
 
 export default function SingleComment({
@@ -17,56 +18,73 @@ export default function SingleComment({
   contents,
   createdAt,
   postId,
-  updateComment,
-  deleteComment,
 }: Props) {
+  let commentToastId: string;
+
+  const client = useQueryClient();
+
   const [isEdit, setIsEdit] = useState(false);
   const [editedContents, setEditedContents] = useState(contents);
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsEdit(!isEdit);
-    const editData = {
-      id,
-
-      // 기존 author유지
-      author: "유지",
-      contents: editedContents,
-      post: parseInt(postId),
-
-      // db에서 자동생성될 예정
-      createdAt,
-      updatedAt: new Date(),
-    };
-    const response = await fetch(`http://localhost:4000/comments/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editData),
-    });
-    const updatedComment = await response.json();
-    updateComment(updatedComment);
-  };
 
   const handleCancelEdit = () => {
     setIsEdit(false);
     setEditedContents(contents);
   };
 
+  const { mutate: mutateDeleteComment } = useMutation({
+    mutationFn: async () =>
+      await axios.delete(`http://localhost:4000/comments/${id}`),
+    onSuccess: () => {
+      toast.success("댓글을 삭제하였습니다.", { id: commentToastId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("댓글 삭제 중 에러 발생", { id: commentToastId });
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries(["comments"]);
+    },
+  });
+
+  const { mutate: mutateUpdateComment } = useMutation({
+    mutationFn: async (comment: any) => {
+      await axios.put(`http://localhost:4000/comments/${id}`, comment);
+    },
+    onSuccess: () => {
+      toast.success("댓글을 수정하였습니다.", { id: commentToastId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("댓글 수정 중 에러 발생", { id: commentToastId });
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries(["comments"]);
+      setIsEdit(!isEdit);
+    },
+  });
+
   const handleDelete = async () => {
-    const response = await fetch(`http://localhost:4000/comments/${id}`, {
-      method: "DELETE",
-    });
-
-    if (response.ok) {
-      await response.json();
-      deleteComment(id);
-    } else {
-      console.error("Failed to delete comment");
+    if (confirm("댓글을 삭제하시겠습니까?")) {
+      mutateDeleteComment();
     }
+    return;
   };
-
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const editData = {
+      id,
+      // 기존 author유지
+      author: "유지",
+      contents: editedContents,
+      post: parseInt(postId),
+      // db에서 자동생성될 예정
+      createdAt,
+      updatedAt: new Date(),
+    };
+    mutateUpdateComment(editData);
+  };
   return (
     <div
       key={id}
