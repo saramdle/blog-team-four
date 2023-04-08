@@ -1,12 +1,12 @@
 import Container from "@/app/components/Container";
+import MainImage from "@/app/components/MainImage";
 import { Metadata } from "next";
-import Image from "next/image";
 import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 
 async function getPost(id: string) {
   const res = await fetch(`http://localhost:4000/posts/${id}`, {
-    next: { revalidate: 60 * 60 },
+    cache: "no-cache",
   });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -35,23 +35,19 @@ export default async function Page({
   const postId = params.postId;
   const post: Post = await getPost(postId);
   return (
-    <Container>
-      <h1>{post?.title}</h1>
-      <Image
-        alt={post?.title || "food image"}
-        src={post?.imgUrl || ""}
-        width={300}
-        height={300}
-      />
-      <p
-        dangerouslySetInnerHTML={{ __html: post?.contents }}
-        className='prose max-w-none prose-p:m-0'
-      />
-      <p>{post?.author}</p>
-      <p>{post?.createdAt}</p>
-      <CommentInput postId={postId} />
-      <Comments postId={postId} />
-    </Container>
+    <>
+      <MainImage src={post?.imgUrl} title={post?.title} />
+      <Container>
+        <p
+          dangerouslySetInnerHTML={{ __html: post?.contents }}
+          className='prose max-w-none prose-p:m-0'
+        />
+        <p>{post?.author}</p>
+        <p>{post?.createdAt}</p>
+        <CommentInput postId={postId} />
+        <Comments postId={postId} />
+      </Container>
+    </>
   );
 }
 
