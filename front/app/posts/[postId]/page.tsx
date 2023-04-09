@@ -2,21 +2,48 @@
 
 import Container from "@/app/components/Container";
 import MainImage from "@/app/components/MainImage";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { usePathname } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 
 export default function Page() {
+  const router = useRouter();
+  const client = useQueryClient();
+  let postToastId: string;
   const pathName = usePathname();
   const postId = pathName.split("/")[2];
   const getPost = () => axios.get(`http://localhost:4000/posts/${postId}`);
   const { isLoading, data, error } = useQuery({
-    queryKey: [`posts/${postId}`],
+    queryKey: [`posts/${postId}`, "posts"],
     queryFn: getPost,
   });
   const post = data?.data;
+
+  const { mutate: mutateDeletePost } = useMutation({
+    mutationFn: async () =>
+      await axios.delete(`http://localhost:4000/posts/${postId}`),
+    onSuccess: () => {
+      toast.success("게시물을 삭제하였습니다.", { id: postToastId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("게시물 삭제 중 에러 발생", { id: postToastId });
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries(["posts"]);
+      router.replace("/posts");
+    },
+  });
+  const handleDelete = () => {
+    if (confirm("게시물을 삭제하시겠습니까?")) {
+      mutateDeletePost();
+    }
+    return;
+  };
 
   if (error) error;
 
@@ -35,7 +62,17 @@ export default function Page() {
           dangerouslySetInnerHTML={{ __html: post?.contents }}
           className='prose max-w-none prose-p:m-0'
         />
-        <p>{}</p>
+        <div className='flex justify-end gap-2'>
+          <button className='btn-outline btn-primary btn-xs btn text-sm font-thin'>
+            수정
+          </button>
+          <button
+            className='btn-outline btn-error btn-xs btn text-sm font-thin text-white'
+            onClick={handleDelete}
+          >
+            삭제
+          </button>
+        </div>
         <CommentInput postId={postId} />
         <Comments postId={postId} />
       </Container>
