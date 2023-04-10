@@ -4,6 +4,7 @@ import Container from "@/app/components/Container";
 import MainImage from "@/app/components/MainImage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import CommentInput from "./CommentInput";
@@ -13,8 +14,10 @@ export default function Page() {
   const router = useRouter();
   const client = useQueryClient();
   let postToastId: string;
+
   const pathName = usePathname();
   const postId = pathName.split("/")[2];
+
   const getPost = () => axios.get(`http://localhost:4000/posts/${postId}`);
   const { isLoading, data, error } = useQuery({
     queryKey: [`posts/${postId}`, "posts"],
@@ -62,10 +65,13 @@ export default function Page() {
           dangerouslySetInnerHTML={{ __html: post?.contents }}
           className='prose max-w-none prose-p:m-0'
         />
-        <div className='flex justify-end gap-2'>
-          <button className='btn-outline btn-primary btn-xs btn text-sm font-thin'>
+        <div className='mt-4 flex justify-end gap-2'>
+          <Link
+            href={`/posts/${postId}/edit`}
+            className='btn-outline btn-primary btn-xs btn text-sm font-thin'
+          >
             수정
-          </button>
+          </Link>
           <button
             className='btn-outline btn-error btn-xs btn text-sm font-thin text-white'
             onClick={handleDelete}
@@ -79,14 +85,3 @@ export default function Page() {
     </>
   );
 }
-
-// export async function generateStaticParams() {
-//   const res = await fetch("http://localhost:4000/posts");
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch all the posts");
-//   }
-//   const posts: Post[] = await res.json();
-//   return posts.map((post) => ({
-//     postId: post.id.toString(),
-//   }));
-// }

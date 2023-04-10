@@ -1,14 +1,33 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 
-export default function Write() {
+export default function EditPost() {
+  let postCommetnId: string;
+
+  const client = useQueryClient();
+
   const router = useRouter();
 
-  //hydration error
+  const pathName = usePathname();
+  const postId = pathName.split("/")[2];
+
+  const getPost = () => axios.get(`http://localhost:4000/posts/${postId}`);
+  const { data } = useQuery({
+    queryKey: [`posts/${postId}`, "posts"],
+    queryFn: getPost,
+  });
+  const post: Post = data?.data;
+
+  const [contentsInput, setContentsInput] = useState<string>(post?.contents);
+  const [title, setTitle] = useState<string>(post?.title);
+
+  // quill hydration error
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -19,9 +38,6 @@ export default function Write() {
     typeof window === "object"
       ? require("react-quill")
       : () => <p>Loading ...</p>;
-
-  const [contentsInput, setContentsInput] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
 
   const modules = useMemo(
     () => ({
@@ -42,39 +58,46 @@ export default function Write() {
     []
   );
 
-  const handleSubmit = async () => {
-    const postingData = {
+  const { mutate: mutateUpdateComment } = useMutation({
+    mutationFn: async (editedPost: any) => {
+      await axios.put(`http://localhost:4000/posts/${postId}`, editedPost);
+    },
+    onSuccess: () => {
+      toast.success("게시물을 수정하였습니다.", { id: postCommetnId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("게시물 수정 중 에러 발생", { id: postCommetnId });
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries([`post/${postId}`]);
+      router.push(`/posts/${postId}`);
+    },
+  });
+
+  const handleUpdate = () => {
+    const editedPost = {
       title,
-
-      // 로그인된 user로 대체될 예정
-      author: "홍길동",
+      author: post?.author,
       contents: contentsInput,
-
-      // 업로드된 사진 url로 대체될 예정
-      imgUrl:
-        "https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-
-      // db에서 자동생성될 예정
-      createdAt: new Date(),
+      imgUrl: post?.imgUrl,
+      createdAt: post?.createdAt,
       updatedAt: new Date(),
     };
+    mutateUpdateComment(editedPost);
+  };
 
-    const response = await fetch("http://localhost:4000/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postingData),
-    });
-    router.replace("/posts");
-    router.refresh();
-    toast.success("게시물이 생성되었습니다.");
-    return response.json();
+  const onSubmitPreventDefault = (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
   return (
     <div className='flex'>
-      <form className='flex flex-1 flex-col gap-5 p-4' onSubmit={handleSubmit}>
+      <form
+        className='flex flex-1 flex-col gap-5 p-4'
+        onSubmit={onSubmitPreventDefault}
+      >
         <div className='flex items-center'>
           <input
             type='text'
@@ -106,9 +129,9 @@ export default function Write() {
           </div>
           <button
             className='btn-primary btn mt-10 w-max'
-            onClick={handleSubmit}
+            onClick={handleUpdate}
           >
-            발행
+            수정
           </button>
         </div>
       </form>
