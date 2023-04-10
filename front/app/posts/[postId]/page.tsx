@@ -37,8 +37,9 @@ export default function Page() {
       }
     },
     onSettled: () => {
-      client.invalidateQueries(["posts"]);
+      client.invalidateQueries(["posts", `posts/${postId}`]);
       router.replace("/posts");
+      router.refresh();
     },
   });
   const handleDelete = () => {

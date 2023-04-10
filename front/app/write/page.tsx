@@ -72,9 +72,16 @@ export default function Write() {
     return response.json();
   };
 
+  const onSubmitPreventDefault = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div className='flex'>
-      <form className='flex flex-1 flex-col gap-5 p-4' onSubmit={handleSubmit}>
+      <form
+        className='flex flex-1 flex-col gap-5 p-4'
+        onSubmit={onSubmitPreventDefault}
+      >
         <div className='flex items-center'>
           <input
             type='text'
