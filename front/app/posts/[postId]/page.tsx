@@ -1,67 +1,88 @@
+"use client";
+
 import Container from "@/app/components/Container";
-import { Metadata } from "next";
-import Image from "next/image";
+import MainImage from "@/app/components/MainImage";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import CommentInput from "./CommentInput";
 import Comments from "./Comments";
 
-async function getPost(id: string) {
-  const res = await fetch(`http://localhost:4000/posts/${id}`, {
-    next: { revalidate: 60 * 60 },
+export default function Page() {
+  const router = useRouter();
+  const client = useQueryClient();
+  let postToastId: string;
+
+  const pathName = usePathname();
+  const postId = pathName.split("/")[2];
+
+  const getPost = () => axios.get(`http://localhost:4000/posts/${postId}`);
+  const { isLoading, data, error } = useQuery({
+    queryKey: [`posts/${postId}`, "posts"],
+    queryFn: getPost,
   });
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
+  const post = data?.data;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: {
-    postId: string;
+  const { mutate: mutateDeletePost } = useMutation({
+    mutationFn: async () =>
+      await axios.delete(`http://localhost:4000/posts/${postId}`),
+    onSuccess: () => {
+      toast.success("게시물을 삭제하였습니다.", { id: postToastId });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error("게시물 삭제 중 에러 발생", { id: postToastId });
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries(["posts", `posts/${postId}`]);
+      router.replace("/posts");
+      router.refresh();
+    },
+  });
+  const handleDelete = () => {
+    if (confirm("게시물을 삭제하시겠습니까?")) {
+      mutateDeletePost();
+    }
+    return;
   };
-}): Promise<Metadata> {
-  const post = await getPost(params.postId);
-  return { title: post.title };
-}
 
-export default async function Page({
-  params,
-}: {
-  params: {
-    postId: string;
-  };
-}) {
-  const postId = params.postId;
-  const post: Post = await getPost(postId);
+  if (error) error;
+
+  if (isLoading) return null;
+
   return (
-    <Container>
-      <h1>{post?.title}</h1>
-      <Image
-        alt={post?.title || "food image"}
-        src={post?.imgUrl || ""}
-        width={300}
-        height={300}
+    <>
+      <MainImage
+        src={post?.imgUrl}
+        title={post?.title}
+        createdAt={post?.createdAt}
+        author={post?.author}
       />
-      <p
-        dangerouslySetInnerHTML={{ __html: post?.contents }}
-        className='prose max-w-none prose-p:m-0'
-      />
-      <p>{post?.author}</p>
-      <p>{post?.createdAt}</p>
-      <CommentInput postId={postId} />
-      <Comments postId={postId} />
-    </Container>
+      <Container>
+        <p
+          dangerouslySetInnerHTML={{ __html: post?.contents }}
+          className='prose max-w-none prose-p:m-0'
+        />
+        <div className='mt-4 flex justify-end gap-2'>
+          <Link
+            href={`/posts/${postId}/edit`}
+            className='btn-outline btn-primary btn-xs btn text-sm font-thin'
+          >
+            수정
+          </Link>
+          <button
+            className='btn-outline btn-error btn-xs btn text-sm font-thin text-white'
+            onClick={handleDelete}
+          >
+            삭제
+          </button>
+        </div>
+        <CommentInput postId={postId} />
+        <Comments postId={postId} />
+      </Container>
+    </>
   );
-}
-
-export async function generateStaticParams() {
-  const res = await fetch("http://localhost:4000/posts");
-  if (!res.ok) {
-    throw new Error("Failed to fetch all the posts");
-  }
-  const posts: Post[] = await res.json();
-  return posts.map((post) => ({
-    postId: post.id.toString(),
-  }));
 }
