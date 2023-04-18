@@ -23,35 +23,34 @@ export default function Write() {
   const [contentsInput, setContentsInput] = useState<string>("");
   const [title, setTitle] = useState<string>("");
 
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const quillRef = useRef(ReactQuill);
 
   const imageHandler = () => {
-    const input = document.createElement('input')
+    const input = document.createElement("input");
 
-    input.setAttribute('type','file');
-    input.setAttribute('accept','image/*');
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
     input.click();
 
-    input.addEventListener('change', async () => {
-      if (input.files != null){
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append('file',file);
-
-       try{ 
-        const response = await fetch("http://localhost:8080/image", {
-          method: "POST",
-          body: formData, 
-        }).then(res => res.text());
-        const imgUrl = response;
-       
-        const editor = quillRef.current.getEditor();
-        const range = editor.getSelection();
-        editor.insertEmbed(range.index, 'image', imgUrl);
-      }catch(error){
-        alert('이미지 추가를 실패했습니다.')
-      }}
+    input.addEventListener("change", async () => {
+      if (input.files != null) {
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+          const response = await fetch("http://localhost:8080/image", {
+            method: "POST",
+            body: formData,
+          }).then((res) => res.text());
+          const imgUrl = response;
+          const editor = quillRef.current.getEditor();
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, "image", imgUrl);
+        } catch (error) {
+          alert("이미지 추가를 실패했습니다.");
+        }
+      }
     });
   };
 
