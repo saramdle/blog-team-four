@@ -10,14 +10,17 @@ export default function Footer() {
     return <></>;
   }
   return (
-    <footer className='bg-slate-900 text-white'>
+    <footer className='mt-8 bg-gray-400 text-white'>
       <Container>
-        <Link
-          href='/'
-          className='m-1 block w-60 border-4 border-white p-2 text-center text-sm font-bold uppercase text-white transition-colors duration-300 ease-in-out'
-        >
-          flavour 4 Favor
-        </Link>
+        <div className='flex items-center justify-between p-2 font-bold'>
+          <Link
+            href='/'
+            className='block w-48 border-4 border-white p-2 text-center text-sm font-bold uppercase'
+          >
+            flavour 4 Favor
+          </Link>
+          <p>Copyright © 2023 - Zolin Friendship</p>
+        </div>
       </Container>
     </footer>
   );
