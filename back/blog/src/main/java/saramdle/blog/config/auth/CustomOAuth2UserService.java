@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import saramdle.blog.config.auth.dto.LoginUser;
 import saramdle.blog.config.auth.dto.OAuthAttributes;
-import saramdle.blog.config.auth.dto.SessionUser;
 import saramdle.blog.domain.User;
 import saramdle.blog.domain.UserRepository;
 
@@ -35,7 +35,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes()); // OAuth 서비스의 유저 정보들
         User user = saveOrUpdate(attributes);
 
-        return new UserPrinciple(new SessionUser(user),
+        return new CustomUserPrinciple(new LoginUser(user),
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString())),
                 attributes.getAttributes()
         );

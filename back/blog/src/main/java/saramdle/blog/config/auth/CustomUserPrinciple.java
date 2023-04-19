@@ -12,16 +12,16 @@ import java.util.TreeSet;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import saramdle.blog.config.auth.dto.SessionUser;
+import saramdle.blog.config.auth.dto.LoginUser;
 
-public class UserPrinciple implements OAuth2User, Serializable {
+public class CustomUserPrinciple implements OAuth2User, Serializable {
 
-    private SessionUser user;
+    private LoginUser loginUser;
     private Set<GrantedAuthority> authorities;
     private Map<String, Object> oAuthAttributes;
 
-    public UserPrinciple(SessionUser user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> oAuthAttributes) {
-        this.user = user;
+    public CustomUserPrinciple(LoginUser loginUser, Collection<? extends GrantedAuthority> authorities, Map<String, Object> oAuthAttributes) {
+        this.loginUser = loginUser;
         this.authorities = (authorities != null)
                 ? Collections.unmodifiableSet(new LinkedHashSet<>(this.sortAuthorities(authorities)))
                 : Collections.unmodifiableSet(new LinkedHashSet<>(AuthorityUtils.NO_AUTHORITIES));
@@ -40,11 +40,11 @@ public class UserPrinciple implements OAuth2User, Serializable {
 
     @Override
     public String getName() {
-        return user.getEmail();
+        return loginUser.getEmail();
     }
 
-    public SessionUser getUser() {
-        return user;
+    public LoginUser getLoginUser() {
+        return loginUser;
     }
 
     private Set<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {

@@ -14,10 +14,10 @@ import saramdle.blog.config.auth.CustomUserPrinciple;
 public class HomeController {
 
     @GetMapping
-    public ResponseEntity home(@AuthenticationPrincipal CustomUserPrinciple user) {
-        if (user == null) {
+    public ResponseEntity home(@AuthenticationPrincipal CustomUserPrinciple userPrinciple) {
+        if (userPrinciple == null) {
              return ResponseEntity.ok("비로그인 요청");
         }
-        return ResponseEntity.ok(user.getUser());
+        return ResponseEntity.ok(userPrinciple.getLoginUser());
     }
 }
