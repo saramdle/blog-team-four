@@ -1,56 +1,24 @@
 package saramdle.blog.config.auth;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import lombok.Getter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import saramdle.blog.config.auth.dto.LoginUser;
+import saramdle.blog.config.auth.dto.OAuthAttributes;
+import saramdle.blog.domain.User;
 
-public class CustomUserPrinciple implements OAuth2User, Serializable {
+@Getter
+public class CustomUserPrinciple extends DefaultOAuth2User {
 
     private LoginUser loginUser;
-    private Set<GrantedAuthority> authorities;
-    private Map<String, Object> oAuthAttributes;
 
-    public CustomUserPrinciple(LoginUser loginUser, Collection<? extends GrantedAuthority> authorities, Map<String, Object> oAuthAttributes) {
-        this.loginUser = loginUser;
-        this.authorities = (authorities != null)
-                ? Collections.unmodifiableSet(new LinkedHashSet<>(this.sortAuthorities(authorities)))
-                : Collections.unmodifiableSet(new LinkedHashSet<>(AuthorityUtils.NO_AUTHORITIES));
-        this.oAuthAttributes = oAuthAttributes;
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return Collections.unmodifiableMap(oAuthAttributes);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.unmodifiableSet(authorities);
-    }
-
-    @Override
-    public String getName() {
-        return loginUser.getEmail();
-    }
-
-    public LoginUser getLoginUser() {
-        return loginUser;
-    }
-
-    private Set<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(
-                Comparator.comparing(GrantedAuthority::getAuthority));
-        sortedAuthorities.addAll(authorities);
-        return sortedAuthorities;
+    public CustomUserPrinciple(User user, OAuthAttributes attributes) {
+        super(
+                Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString())),
+                attributes.getAttributes(),
+                attributes.getNameAttributeKey()
+        );
+        this.loginUser = new LoginUser(user);
     }
 }
