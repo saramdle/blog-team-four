@@ -43,6 +43,10 @@ public class UserPrinciple implements OAuth2User, Serializable {
         return user.getEmail();
     }
 
+    public SessionUser getUser() {
+        return user;
+    }
+
     private Set<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(
                 Comparator.comparing(GrantedAuthority::getAuthority));
