@@ -110,7 +110,7 @@ export default function Write() {
   return (
     <div className='flex'>
       <form
-        className='flex flex-1 flex-col gap-5 p-4'
+        className='flex h-screen flex-1 flex-col gap-5 p-4'
         onSubmit={onSubmitPreventDefault}
       >
         <div className='flex items-center'>
@@ -122,17 +122,16 @@ export default function Write() {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-
-        <div>
+        <div className='flex-grow'>
           {mounted && (
             <ReactQuill
               ref={quillRef}
               theme='snow'
               value={contentsInput}
               onChange={setContentsInput}
-              className='h-[550px]'
               modules={modules}
               placeholder='배부르지 않으면 세상 모든 것이 어렵다...'
+              className='h-full'
             />
           )}
         </div>

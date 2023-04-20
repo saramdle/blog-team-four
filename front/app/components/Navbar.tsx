@@ -6,6 +6,7 @@ import Container from "./Container";
 import Link from "next/link";
 import { NAV_ITEMS } from "@/constants/navItems";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
@@ -19,6 +20,11 @@ export default function Navbar() {
     //to prevent scrolling when drawer is open
     document.body.classList.toggle("drawer-open");
   };
+
+  const path = usePathname();
+  if (path === "/write") {
+    return <></>;
+  }
 
   return (
     <header className='select-none p-2'>
