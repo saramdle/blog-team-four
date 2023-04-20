@@ -1,21 +1,14 @@
 package saramdle.blog.config.auth;
 
-import static saramdle.blog.config.auth.SessionConst.LOGIN_USER;
-
-import java.util.Collections;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import saramdle.blog.config.auth.dto.OAuthAttributes;
-import saramdle.blog.config.auth.dto.SessionUser;
 import saramdle.blog.domain.User;
 import saramdle.blog.domain.UserRepository;
 
@@ -25,7 +18,6 @@ import saramdle.blog.domain.UserRepository;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession; // 로그인 정보를 저장할 세션
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -40,13 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes()); // OAuth 서비스의 유저 정보들
         User user = saveOrUpdate(attributes);
 
-        httpSession.setAttribute(LOGIN_USER, new SessionUser(user));
-
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey()
-        );
+        return new CustomUserPrinciple(user, attributes);
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
