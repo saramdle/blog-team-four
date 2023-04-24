@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRepository;
+import saramdle.blog.domain.PostRequestDto;
 import saramdle.blog.domain.exception.NotFoundException;
 
 @Transactional
@@ -72,7 +73,7 @@ class PostServiceTest {
                 .build();
         Long postId = postRepository.save(post).getId();
 
-        Post updateParam = Post.builder()
+        PostRequestDto updateParam = PostRequestDto.builder()
                 .title("제목2")
                 .contents("본문2")
                 .imgUrl("https://img.siksinhot.com/article/1638761259231391.jpg")

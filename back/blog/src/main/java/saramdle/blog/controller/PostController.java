@@ -68,7 +68,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PostResponseDto> update(@PathVariable long id, @RequestBody PostRequestDto postRequestDto) {
-        Long postId = postService.update(id, toEntity(postRequestDto));
+        Long postId = postService.update(id, postRequestDto);
         Post post = postService.findPost(postId);
         return ResponseEntity.ok(toDto(post));
     }
@@ -87,14 +87,6 @@ public class PostController {
                 .author(post.getUser().getEmail())
                 .imgUrl(post.getImgUrl())
                 .createdAt(post.getCreatedAt())
-                .build();
-    }
-
-    private Post toEntity(PostRequestDto postRequestDto) {
-        return Post.builder()
-                .title(postRequestDto.getTitle())
-                .contents(postRequestDto.getContents())
-                .imgUrl(postRequestDto.getImgUrl())
                 .build();
     }
 
