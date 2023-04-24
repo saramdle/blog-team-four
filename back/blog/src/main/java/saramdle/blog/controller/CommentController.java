@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import saramdle.blog.config.auth.CustomUserPrinciple;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.CommentRequestDto;
 import saramdle.blog.domain.CommentResponseDto;
+import saramdle.blog.domain.User;
 import saramdle.blog.service.CommentService;
 import saramdle.blog.service.PostService;
+import saramdle.blog.service.UserService;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ import saramdle.blog.service.PostService;
 public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
+    private final UserService userService;
 
     @GetMapping("/{postId}")
     @ResponseBody
@@ -40,8 +45,11 @@ public class CommentController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<String> postComment(@RequestBody CommentRequestDto commentRequestDto) {
-        Comment comment = toEntity(commentRequestDto);
+    public ResponseEntity<String> postComment(@RequestBody CommentRequestDto commentRequestDto,
+                                              @AuthenticationPrincipal CustomUserPrinciple userPrinciple) {
+        User user = userService.findUser(userPrinciple.getUserEmail());
+        Comment comment = toEntity(commentRequestDto, user);
+
         Long commentId = commentService.save(comment);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -70,7 +78,14 @@ public class CommentController {
     private Comment toEntity(CommentRequestDto commentRequestDto) {
         return Comment.builder()
                 .contents(commentRequestDto.getContents())
-                .user(commentRequestDto.getUser())
+                .post(postService.findPost(commentRequestDto.getPostId()))
+                .build();
+    }
+
+    private Comment toEntity(CommentRequestDto commentRequestDto, User user) {
+        return Comment.builder()
+                .contents(commentRequestDto.getContents())
+                .user(user)
                 .post(postService.findPost(commentRequestDto.getPostId()))
                 .build();
     }
