@@ -25,6 +25,8 @@ public class SecurityConfig {
                     .anyRequest().authenticated()
                 .and()
                     .logout()
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
