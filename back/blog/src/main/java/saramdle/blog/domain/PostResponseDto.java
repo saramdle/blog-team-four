@@ -12,17 +12,17 @@ public class PostResponseDto {
     private Long id;
     private String title;
     private String contents;
-    private User user;
+    private String author;
     private String imgUrl;
     private LocalDateTime createdAt;
 
     @Builder
-    private PostResponseDto(Long id, String title, String contents, User user,
+    private PostResponseDto(Long id, String title, String contents, String author,
                             String imgUrl, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.contents = contents;
-        this.user = user;
+        this.author = author;
         this.imgUrl = imgUrl;
         this.createdAt = createdAt;
     }
