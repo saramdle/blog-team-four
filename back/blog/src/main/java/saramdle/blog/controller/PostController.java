@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import saramdle.blog.config.auth.CustomUserPrinciple;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRequestDto;
 import saramdle.blog.domain.PostResponseDto;
+import saramdle.blog.domain.User;
 import saramdle.blog.service.PostService;
+import saramdle.blog.service.UserService;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,10 +31,13 @@ import saramdle.blog.service.PostService;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> newPost(@RequestBody PostRequestDto postRequestDto) {
-        Post post = toEntity(postRequestDto);
+    public ResponseEntity<String> newPost(@RequestBody PostRequestDto postRequestDto,
+                                          @AuthenticationPrincipal CustomUserPrinciple userPrinciple) {
+        User findUser = userService.findUser(userPrinciple.getUserEmail());
+        Post post = toEntity(postRequestDto, findUser);
         Long postId = postService.save(post);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -87,8 +94,16 @@ public class PostController {
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .contents(postRequestDto.getContents())
-                .user(postRequestDto.getUser())
                 .imgUrl(postRequestDto.getImgUrl())
+                .build();
+    }
+
+    private Post toEntity(PostRequestDto postRequestDto, User user) {
+        return Post.builder()
+                .title(postRequestDto.getTitle())
+                .contents(postRequestDto.getContents())
+                .imgUrl(postRequestDto.getImgUrl())
+                .user(user)
                 .build();
     }
 }
