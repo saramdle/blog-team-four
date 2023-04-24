@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import saramdle.blog.domain.Comment;
+import saramdle.blog.domain.CommentRequestDto;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRequestDto;
 import saramdle.blog.service.CommentService;
@@ -69,8 +70,8 @@ class BaseTimeEntityTest {
         Long commentId = commentService.save(comment);
         Comment oldComment = commentService.findComment(commentId);
 
-        Comment updateComment = Comment.builder().contents("내용2").build();
-        commentService.updateComment(commentId, updateComment);
+        CommentRequestDto updateParam = CommentRequestDto.builder().contents("내용2").build();
+        commentService.updateComment(commentId, updateParam);
         Comment newComment = commentService.findComment(commentId);
 
         LocalDateTime oldTime = oldComment.getUpdatedAt();

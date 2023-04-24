@@ -63,7 +63,7 @@ public class CommentController {
     @PutMapping("/{commentId}")
     @ResponseBody
     public ResponseEntity<CommentResponseDto> updateComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable Long commentId) {
-        commentId = commentService.updateComment(commentId, toEntity(commentRequestDto));
+        commentId = commentService.updateComment(commentId, commentRequestDto);
         Comment comment = commentService.findComment(commentId);
         return ResponseEntity.ok(toDto(comment));
     }
@@ -73,13 +73,6 @@ public class CommentController {
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
         return ResponseEntity.ok("댓글 삭제 성공");
-    }
-    
-    private Comment toEntity(CommentRequestDto commentRequestDto) {
-        return Comment.builder()
-                .contents(commentRequestDto.getContents())
-                .post(postService.findPost(commentRequestDto.getPostId()))
-                .build();
     }
 
     private Comment toEntity(CommentRequestDto commentRequestDto, User user) {

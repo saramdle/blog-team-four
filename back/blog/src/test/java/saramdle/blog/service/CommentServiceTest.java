@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Comment;
+import saramdle.blog.domain.CommentRequestDto;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.exception.NotFoundException;
 
@@ -67,8 +68,8 @@ class CommentServiceTest {
         Comment comment = Comment.builder().post(post).build();
         Long commentId = commentService.save(comment);
 
-        Comment newComment = Comment.builder().contents("Hello World").build();
-        Long updatedCommentId = commentService.updateComment(commentId, newComment);
+        CommentRequestDto updateParam = CommentRequestDto.builder().contents("Hello World").build();
+        Long updatedCommentId = commentService.updateComment(commentId, updateParam);
 
         Comment result = commentService.findComment(updatedCommentId);
         assertThat(result.getContents()).isEqualTo("Hello World");
