@@ -94,7 +94,7 @@ public class CommentController {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .contents(comment.getContents())
-                .user(comment.getUser())
+                .author(comment.getUser().getEmail())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }
