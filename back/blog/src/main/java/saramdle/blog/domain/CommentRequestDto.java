@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentRequestDto {
     private String contents;
-    private User user;
     private Long postId;
 
     @Builder
-    private CommentRequestDto(String contents, User user, Long postId) {
+    private CommentRequestDto(String contents, Long postId) {
         this.contents = contents;
-        this.user = user;
         this.postId = postId;
     }
 }

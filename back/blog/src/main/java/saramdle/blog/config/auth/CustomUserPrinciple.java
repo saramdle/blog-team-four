@@ -21,4 +21,8 @@ public class CustomUserPrinciple extends DefaultOAuth2User {
         );
         this.loginUser = new LoginUser(user);
     }
+
+    public String getUserEmail() {
+        return loginUser.getEmail();
+    }
 }

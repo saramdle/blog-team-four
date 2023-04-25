@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Comment;
 import saramdle.blog.domain.CommentRepository;
+import saramdle.blog.domain.CommentRequestDto;
 import saramdle.blog.domain.exception.NotFoundException;
 
 @Service
@@ -34,7 +35,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Long updateComment(Long commentId, Comment updateParam) {
+    public Long updateComment(Long commentId, CommentRequestDto updateParam) {
         Comment comment = findComment(commentId);
         comment.update(updateParam.getContents());
 

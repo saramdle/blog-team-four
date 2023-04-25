@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 public class CommentResponseDto {
     private Long id;
     private String contents;
-    private User user;
+    private String author;
     private LocalDateTime createdAt;
 
     @Builder
-    private CommentResponseDto(Long id, String contents, User user, LocalDateTime createdAt) {
+    private CommentResponseDto(Long id, String contents, String author, LocalDateTime createdAt) {
         this.id = id;
         this.contents = contents;
-        this.user = user;
+        this.author = author;
         this.createdAt = createdAt;
     }
 }

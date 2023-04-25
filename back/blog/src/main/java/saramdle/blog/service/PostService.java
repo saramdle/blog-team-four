@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saramdle.blog.domain.Post;
 import saramdle.blog.domain.PostRepository;
+import saramdle.blog.domain.PostRequestDto;
 import saramdle.blog.domain.exception.NotFoundException;
 
 @Service
@@ -33,7 +34,7 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(Long postId, Post updateParam) {
+    public Long update(Long postId, PostRequestDto updateParam) {
         Post post = findPost(postId);
         post.update(updateParam.getTitle(), updateParam.getContents(), updateParam.getImgUrl());
         return postId;
