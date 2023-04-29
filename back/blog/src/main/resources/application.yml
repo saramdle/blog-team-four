@@ -11,3 +11,6 @@ logging:
   level.org.hibernate:
     SQL: debug
     type.descriptor.sql.BasicBinder: trace
+
+upload:
+  dir: 'your local dir url'
