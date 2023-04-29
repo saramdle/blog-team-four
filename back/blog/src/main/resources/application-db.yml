@@ -1,0 +1,8 @@
+spring:
+  # for RDS
+  datasource:
+    url: jdbc:~~~ insert your url
+    username: username
+    password: 'insert your password'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
