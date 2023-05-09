@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: "insert ACCESSKEY"
+      secretKey: "insert SECRETKEY"
+    region:
+      static: "your region"
+    s3:
+      bucket: "bucketName"
+    stack:
+      auto: false
