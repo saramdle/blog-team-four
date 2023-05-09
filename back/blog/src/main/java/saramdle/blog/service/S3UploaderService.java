@@ -87,7 +87,6 @@ public class S3UploaderService {
 
     /**
      * @description 사용자가 업로드한 파일에서 확장자를 추출한다.
-     *
      * @param originalFilename 원본 파일 이름
      * @return 파일 확장자
      */

@@ -9,4 +9,3 @@ cloud:
       bucket: "bucketName"
     stack:
       auto: false
-
