@@ -1,11 +1,10 @@
 spring:
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-
   profiles:
-    include: oauth
+    active: dev # 개발환경
+#    active: prod # 운영환경
+    include:
+      - oauth
+      - aws
 
 logging:
   level.org.hibernate:
