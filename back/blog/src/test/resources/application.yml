@@ -1,4 +1,9 @@
 spring:
   profiles:
-    active: "test"
-    include: oauth
+    active: test
+    include:
+      - oauth
+      - aws
+
+upload:
+  dir: 'your local dir url'
