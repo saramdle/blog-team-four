@@ -218,6 +218,6 @@ $RECYCLE.BIN/
 
 # secret
 application-oauth.yml
-application-db.yml
-aws.yml
-
+application-aws.yml
+application-dev.yml
+application-prod.yml
